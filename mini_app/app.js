@@ -308,6 +308,7 @@ function setupEventListeners() {
     });
 
     // Поиск по Enter и кнопке
+    elements.searchInput.addEventListener('input', handleSearchInput);
     elements.searchInput.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
             performSearch();
