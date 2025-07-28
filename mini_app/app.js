@@ -3,6 +3,11 @@ const appState = {
     userData: null,
     commands: [],
     categories: {},
+    gpsData: {},
+    rpTerms: {},
+    helperDuties: {},
+    chatRules: {},
+    muteRules: {},
     currentSection: 'main',
     searchResults: [],
     tg: null
@@ -90,8 +95,8 @@ async function initializeApp() {
         console.log('Telegram Web App инициализирован');
     }
     
-    // Загружаем команды сразу
-    await loadCommands();
+    // Загружаем все данные сразу
+    await loadAllData();
     
     // Настраиваем обработчики событий
     setupEventListeners();
@@ -99,7 +104,7 @@ async function initializeApp() {
     // Показываем главную страницу
     showMainSection();
     
-    // Загружаем профиль пользователя из Telegram
+    // Загружаем профиль пользователя
     await loadUserProfileFromTelegram();
 }
 
@@ -172,6 +177,83 @@ async function loadUserProfileFromTelegram() {
         
     } catch (error) {
         console.error('Ошибка загрузки профиля из Telegram:', error);
+    }
+}
+
+// Загрузка всех данных
+async function loadAllData() {
+    try {
+        await Promise.all([
+            loadCommands(),
+            loadGPSData(),
+            loadRPTerms(),
+            loadHelperDuties(),
+            loadChatRules(),
+            loadMuteRules()
+        ]);
+        console.log('Все данные загружены');
+    } catch (error) {
+        console.error('Ошибка загрузки данных:', error);
+    }
+}
+
+// Загрузка GPS данных
+async function loadGPSData() {
+    try {
+        const response = await fetch('gps.json');
+        if (!response.ok) throw new Error('Ошибка загрузки GPS данных');
+        appState.gpsData = await response.json();
+    } catch (error) {
+        console.error('Ошибка загрузки GPS данных:', error);
+        appState.gpsData = {};
+    }
+}
+
+// Загрузка RP терминов
+async function loadRPTerms() {
+    try {
+        const response = await fetch('rp_terms.json');
+        if (!response.ok) throw new Error('Ошибка загрузки RP терминов');
+        appState.rpTerms = await response.json();
+    } catch (error) {
+        console.error('Ошибка загрузки RP терминов:', error);
+        appState.rpTerms = {};
+    }
+}
+
+// Загрузка обязанностей хелпера
+async function loadHelperDuties() {
+    try {
+        const response = await fetch('helper_duties.json');
+        if (!response.ok) throw new Error('Ошибка загрузки обязанностей хелпера');
+        appState.helperDuties = await response.json();
+    } catch (error) {
+        console.error('Ошибка загрузки обязанностей хелпера:', error);
+        appState.helperDuties = {};
+    }
+}
+
+// Загрузка правил чата
+async function loadChatRules() {
+    try {
+        const response = await fetch('support_chat_rules.json');
+        if (!response.ok) throw new Error('Ошибка загрузки правил чата');
+        appState.chatRules = await response.json();
+    } catch (error) {
+        console.error('Ошибка загрузки правил чата:', error);
+        appState.chatRules = {};
+    }
+}
+
+// Загрузка правил мута
+async function loadMuteRules() {
+    try {
+        const response = await fetch('hmute_rules.json');
+        if (!response.ok) throw new Error('Ошибка загрузки правил мута');
+        appState.muteRules = await response.json();
+    } catch (error) {
+        console.error('Ошибка загрузки правил мута:', error);
+        appState.muteRules = {};
     }
 }
 
@@ -384,20 +466,61 @@ function showSearchSuggestions(query) {
         const matchingCommands = appState.commands.filter(cmd => 
             cmd.command.toLowerCase().includes(query) ||
             cmd.description.toLowerCase().includes(query)
-        ).slice(0, 3);
+        ).slice(0, 2);
         
         suggestions.push(...matchingCommands.map(cmd => ({
             type: 'command',
             text: cmd.command,
-            description: cmd.description
+            description: cmd.description,
+            icon: '🔧'
         })));
     }
+    
+    // Добавляем GPS локации
+    if (appState.gpsData) {
+        Object.entries(appState.gpsData).forEach(([category, locations]) => {
+            if (Array.isArray(locations)) {
+                const matchingLocations = locations.filter(location => 
+                    location.toLowerCase().includes(query) ||
+                    category.toLowerCase().includes(query)
+                ).slice(0, 1);
+                
+                suggestions.push(...matchingLocations.map(location => ({
+                    type: 'gps',
+                    text: location,
+                    description: `📍 ${category}`,
+                    icon: '📍'
+                })));
+            }
+        });
+    }
+    
+    // Добавляем RP термины
+    if (appState.rpTerms) {
+        Object.entries(appState.rpTerms).forEach(([term, description]) => {
+            if (term.toLowerCase().includes(query) || 
+                description.toLowerCase().includes(query)) {
+                suggestions.push({
+                    type: 'rp',
+                    text: term,
+                    description: description,
+                    icon: '📖'
+                });
+            }
+        });
+    }
+    
+    // Ограничиваем количество подсказок
+    suggestions.splice(3);
     
     // Отображаем подсказки
     elements.searchSuggestions.innerHTML = suggestions.map(suggestion => `
         <div class="suggestion-item" data-type="${suggestion.type}" data-text="${suggestion.text}">
-            <div class="suggestion-text">${suggestion.text}</div>
-            <div class="suggestion-desc">${suggestion.description}</div>
+            <div class="suggestion-icon">${suggestion.icon}</div>
+            <div class="suggestion-content">
+                <div class="suggestion-text">${suggestion.text}</div>
+                <div class="suggestion-desc">${suggestion.description}</div>
+            </div>
         </div>
     `).join('');
     
@@ -456,6 +579,89 @@ function performSearchLogic(query) {
         })));
     }
     
+    // Поиск по GPS данным
+    if (appState.gpsData) {
+        Object.entries(appState.gpsData).forEach(([category, locations]) => {
+            if (Array.isArray(locations)) {
+                const matchingLocations = locations.filter(location => 
+                    location.toLowerCase().includes(query) ||
+                    category.toLowerCase().includes(query)
+                );
+                
+                results.push(...matchingLocations.map(location => ({
+                    type: 'gps',
+                    title: location,
+                    description: `📍 ${category}`,
+                    category: category
+                })));
+            }
+        });
+    }
+    
+    // Поиск по RP терминам
+    if (appState.rpTerms) {
+        Object.entries(appState.rpTerms).forEach(([term, description]) => {
+            if (term.toLowerCase().includes(query) || 
+                description.toLowerCase().includes(query)) {
+                results.push({
+                    type: 'rp',
+                    title: term,
+                    description: description,
+                    category: 'RP термины'
+                });
+            }
+        });
+    }
+    
+    // Поиск по обязанностям хелпера
+    if (appState.helperDuties) {
+        Object.entries(appState.helperDuties).forEach(([section, duties]) => {
+            if (Array.isArray(duties)) {
+                const matchingDuties = duties.filter(duty => 
+                    duty.toLowerCase().includes(query) ||
+                    section.toLowerCase().includes(query)
+                );
+                
+                results.push(...matchingDuties.map(duty => ({
+                    type: 'helper',
+                    title: duty,
+                    description: `👨‍💼 ${section}`,
+                    category: section
+                })));
+            }
+        });
+    }
+    
+    // Поиск по правилам чата
+    if (appState.chatRules) {
+        Object.entries(appState.chatRules).forEach(([rule, description]) => {
+            if (rule.toLowerCase().includes(query) || 
+                description.toLowerCase().includes(query)) {
+                results.push({
+                    type: 'chat',
+                    title: rule,
+                    description: description,
+                    category: 'Правила чата'
+                });
+            }
+        });
+    }
+    
+    // Поиск по правилам мута
+    if (appState.muteRules) {
+        Object.entries(appState.muteRules).forEach(([rule, description]) => {
+            if (rule.toLowerCase().includes(query) || 
+                description.toLowerCase().includes(query)) {
+                results.push({
+                    type: 'mute',
+                    title: rule,
+                    description: description,
+                    category: 'Правила мута'
+                });
+            }
+        });
+    }
+    
     return results;
 }
 
@@ -468,8 +674,12 @@ function displaySearchResults(results) {
         elements.resultsTitle.textContent = `Найдено: ${results.length}`;
         elements.resultsContainer.innerHTML = results.map(result => `
             <div class="result-item">
-                <div class="result-command">${result.title}</div>
-                <div class="result-description">${result.description}</div>
+                <div class="result-icon">${getResultIcon(result.type)}</div>
+                <div class="result-content">
+                    <div class="result-title">${result.title}</div>
+                    <div class="result-description">${result.description}</div>
+                    <div class="result-category">${result.category}</div>
+                </div>
             </div>
         `).join('');
     }
@@ -481,8 +691,11 @@ function displaySearchResults(results) {
 function getResultIcon(type) {
     const icons = {
         command: '🔧',
-        gps: '🗺️',
-        rp: '📖'
+        gps: '📍',
+        rp: '📖',
+        helper: '👨‍💼',
+        chat: '💬',
+        mute: '🔇'
     };
     return icons[type] || '📄';
 }
