@@ -61,7 +61,7 @@
             document.getElementById('categoryName').textContent = `📁 ${category}`;
 
             try {
-                const response = await fetch('/api/commands');
+                const response = await fetch('commands.json');
                 const commands = await response.json();
                 
                 const categoryCommands = commands.filter(cmd => cmd.category === category);
