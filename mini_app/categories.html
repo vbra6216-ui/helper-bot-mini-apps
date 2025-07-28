@@ -81,8 +81,7 @@
 
         // Показать команды категории
         function showCategoryCommands(category) {
-            // Создаем новую страницу для категории
-            const newPage = window.open(`category_commands.html?category=${encodeURIComponent(category)}`, '_blank');
+            location.href = `category_commands.html?category=${encodeURIComponent(category)}`;
         }
 
         // Получить SVG для категории
