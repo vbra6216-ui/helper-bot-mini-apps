@@ -106,7 +106,7 @@ async function initializeApp() {
 // Загрузка команд из API
 async function loadCommands() {
     try {
-        const response = await fetch('/api/commands');
+        const response = await fetch('commands.json');
         const commands = await response.json();
         appState.commands = commands;
         
