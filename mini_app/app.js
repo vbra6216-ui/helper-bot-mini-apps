@@ -79,9 +79,33 @@ const elements = {
     loadingOverlay: document.getElementById('loadingOverlay')
 };
 
+// Оптимизация для мобильных устройств
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
 // Инициализация приложения
 async function initializeApp() {
     try {
+        // Оптимизация для мобильных устройств
+        if (isMobile || isTouchDevice) {
+            document.body.classList.add('mobile-device');
+            
+            // Отключаем hover эффекты на мобильных
+            const style = document.createElement('style');
+            style.textContent = `
+                @media (hover: none) and (pointer: coarse) {
+                    .action-card:hover,
+                    .category-card:hover,
+                    .command-item:hover,
+                    .btn-icon:hover {
+                        transform: none !important;
+                        box-shadow: none !important;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
         // Инициализируем Telegram Web App
         if (window.Telegram && window.Telegram.WebApp) {
             appState.tg = window.Telegram.WebApp;
@@ -341,37 +365,49 @@ function saveUserDataToStorage(userData) {
     }
 }
 
-// Настройка обработчиков событий
+// Настройка обработчиков событий с оптимизацией для мобильных
 function setupEventListeners() {
+    // Оптимизация для мобильных устройств
+    const eventType = isTouchDevice ? 'touchstart' : 'click';
+    
     // Профиль
-    elements.profileBtn.addEventListener('click', showProfileModal);
-    elements.closeProfileModal.addEventListener('click', hideProfileModal);
+    elements.profileBtn.addEventListener(eventType, showProfileModal);
+    elements.closeProfileModal.addEventListener(eventType, hideProfileModal);
     
     // Бургер меню
-    elements.burgerMenuBtn.addEventListener('click', showBurgerMenu);
-    elements.closeBurgerMenu.addEventListener('click', hideBurgerMenu);
+    elements.burgerMenuBtn.addEventListener(eventType, showBurgerMenu);
+    elements.closeBurgerMenu.addEventListener(eventType, hideBurgerMenu);
     
     // Закрытие бургер меню при клике вне его
-    document.addEventListener('click', function(event) {
+    document.addEventListener(eventType, function(event) {
         if (event.target === elements.burgerMenu) {
             hideBurgerMenu();
         }
     });
     
     // Закрытие модального окна профиля при клике вне его
-    document.addEventListener('click', function(event) {
+    document.addEventListener(eventType, function(event) {
         if (event.target === elements.profileModal) {
             hideProfileModal();
         }
     });
     
-    // Поиск
+    // Поиск с оптимизацией для мобильных
     elements.searchInput.addEventListener('input', handleSearchInput);
-    elements.searchBtn.addEventListener('click', performSearch);
-    elements.clearResults.addEventListener('click', clearSearchResults);
+    elements.searchBtn.addEventListener(eventType, performSearch);
+    elements.clearResults.addEventListener(eventType, clearSearchResults);
+    
+    // Предотвращение зума на iOS
+    if (isMobile) {
+        elements.searchInput.addEventListener('blur', () => {
+            setTimeout(() => {
+                window.scrollTo(0, 0);
+            }, 100);
+        });
+    }
     
     // Быстрые действия - исправляем обработчики
-    document.addEventListener('click', function(event) {
+    document.addEventListener(eventType, function(event) {
         const actionCard = event.target.closest('.action-card');
         if (actionCard) {
             const action = actionCard.dataset.action;
@@ -381,15 +417,39 @@ function setupEventListeners() {
         }
     });
     
+    // Кнопка выхода
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener(eventType, () => {
+            if (window.passwordSystem) {
+                window.passwordSystem.logout();
+            }
+        });
+    }
+    
     // Кнопки "Назад"
-    elements.backToMain.addEventListener('click', showMainSection);
-    elements.backFromGPS.addEventListener('click', showMainSection);
-    elements.backFromRPTerms.addEventListener('click', showMainSection);
-    elements.backFromHelperDuties.addEventListener('click', showMainSection);
-    elements.backFromChatRules.addEventListener('click', showMainSection);
-    elements.backFromMuteRules.addEventListener('click', showMainSection);
-    elements.backFromPremium.addEventListener('click', showMainSection);
-    elements.backFromCategory.addEventListener('click', showCategoriesSection);
+    elements.backToMain.addEventListener(eventType, showMainSection);
+    elements.backFromGPS.addEventListener(eventType, showMainSection);
+    elements.backFromRPTerms.addEventListener(eventType, showMainSection);
+    elements.backFromHelperDuties.addEventListener(eventType, showMainSection);
+    elements.backFromChatRules.addEventListener(eventType, showMainSection);
+    elements.backFromMuteRules.addEventListener(eventType, showMainSection);
+    elements.backFromPremium.addEventListener(eventType, showMainSection);
+    elements.backFromCategory.addEventListener(eventType, showCategoriesSection);
+    
+    // Оптимизация прокрутки для мобильных
+    if (isMobile) {
+        // Плавная прокрутка
+        document.addEventListener('touchmove', (event) => {
+            const target = event.target;
+            if (target.scrollHeight > target.clientHeight) {
+                // Разрешаем прокрутку только для элементов с прокруткой
+                return;
+            }
+            // Предотвращаем прокрутку страницы при касании элементов
+            event.preventDefault();
+        }, { passive: false });
+    }
 }
 
 // Показать модальное окно профиля
@@ -504,7 +564,20 @@ function getAchievementId(index) {
     return achievements[index] || '';
 }
 
-// Обработка ввода в поиск
+// Debounce функция для оптимизации поиска
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Обработка ввода в поиск с оптимизацией для мобильных
 function handleSearchInput(event) {
     const query = event.target.value.toLowerCase().trim();
     
@@ -513,9 +586,12 @@ function handleSearchInput(event) {
         return;
     }
     
-    // Показываем подсказки
-    showSearchSuggestions(query);
+    // Используем debounce для оптимизации на мобильных устройствах
+    debouncedShowSuggestions(query);
 }
+
+// Debounced версия показа подсказок
+const debouncedShowSuggestions = debounce(showSearchSuggestions, isMobile ? 300 : 150);
 
 // Показать подсказки поиска
 function showSearchSuggestions(query) {
