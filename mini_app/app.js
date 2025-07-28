@@ -304,21 +304,11 @@ function setupEventListeners() {
             hideProfileModal();
         }
     });
-
-    // Поиск по Enter и кнопке
-    elements.searchInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            performSearch();
-        }
-    });
-    elements.searchBtn.addEventListener('click', function() {
-        performSearch();
-    });
-
-    // Кнопка очистки/закрытия результатов поиска
-    elements.clearResults.addEventListener('click', function() {
-        clearSearchResults();
-    });
+    
+    // Поиск
+    elements.searchInput.addEventListener('input', handleSearchInput);
+    elements.searchBtn.addEventListener('click', performSearch);
+    elements.clearResults.addEventListener('click', clearSearchResults);
     
     // Быстрые действия - исправляем обработчики
     document.addEventListener('click', function(event) {
@@ -559,7 +549,6 @@ function performSearch() {
     setTimeout(() => {
         const results = performSearchLogic(query);
         displaySearchResults(results);
-        showSearchResults(); // Всегда явно показываем меню результатов
         hideLoading();
         
         // Увеличиваем счетчик поисков
