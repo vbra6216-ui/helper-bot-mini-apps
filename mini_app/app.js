@@ -92,6 +92,9 @@ async function initializeApp() {
             document.body.classList.add('dark-theme');
         }
         
+        // Настраиваем для мобильных устройств
+        setupMobileOptimizations();
+        
         console.log('Telegram Web App инициализирован');
     }
     
@@ -106,6 +109,61 @@ async function initializeApp() {
     
     // Загружаем профиль пользователя
     await loadUserProfileFromTelegram();
+}
+
+// Настройка оптимизаций для мобильных устройств
+function setupMobileOptimizations() {
+    // Предотвращаем зум при двойном тапе
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+    
+    // Оптимизация скролла для iOS
+    document.addEventListener('touchmove', function(event) {
+        if (event.scale !== 1) {
+            event.preventDefault();
+        }
+    }, { passive: false });
+    
+    // Улучшенная обработка касаний
+    document.addEventListener('touchstart', function() {}, { passive: true });
+    
+    // Предотвращаем выделение текста при долгом тапе
+    document.addEventListener('selectstart', function(e) {
+        if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+            e.preventDefault();
+        }
+    });
+    
+    // Настройка viewport для безопасных областей
+    if (appState.tg && appState.tg.viewportHeight) {
+        document.documentElement.style.setProperty('--tg-viewport-height', `${appState.tg.viewportHeight}px`);
+    }
+    
+    // Обработка изменения размера экрана
+    window.addEventListener('resize', debounce(function() {
+        if (appState.tg) {
+            appState.tg.expand();
+        }
+    }, 250));
+}
+
+// Функция debounce для оптимизации производительности
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
 }
 
 // Загрузка команд из API
@@ -284,16 +342,33 @@ function saveUserDataToStorage(userData) {
 // Настройка обработчиков событий
 function setupEventListeners() {
     // Профиль
-    elements.profileBtn.addEventListener('click', showProfileModal);
-    elements.closeProfileModal.addEventListener('click', hideProfileModal);
+    elements.profileBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        triggerHapticFeedback('light');
+        showProfileModal();
+    });
+    elements.closeProfileModal.addEventListener('click', function(e) {
+        e.preventDefault();
+        triggerHapticFeedback('light');
+        hideProfileModal();
+    });
     
     // Бургер меню
-    elements.burgerMenuBtn.addEventListener('click', showBurgerMenu);
-    elements.closeBurgerMenu.addEventListener('click', hideBurgerMenu);
+    elements.burgerMenuBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        triggerHapticFeedback('light');
+        showBurgerMenu();
+    });
+    elements.closeBurgerMenu.addEventListener('click', function(e) {
+        e.preventDefault();
+        triggerHapticFeedback('light');
+        hideBurgerMenu();
+    });
     
     // Закрытие бургер меню при клике вне его
     document.addEventListener('click', function(event) {
         if (event.target === elements.burgerMenu) {
+            triggerHapticFeedback('light');
             hideBurgerMenu();
         }
     });
@@ -301,19 +376,30 @@ function setupEventListeners() {
     // Закрытие модального окна профиля при клике вне его
     document.addEventListener('click', function(event) {
         if (event.target === elements.profileModal) {
+            triggerHapticFeedback('light');
             hideProfileModal();
         }
     });
     
     // Поиск
     elements.searchInput.addEventListener('input', handleSearchInput);
-    elements.searchBtn.addEventListener('click', performSearch);
-    elements.clearResults.addEventListener('click', clearSearchResults);
+    elements.searchBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        triggerHapticFeedback('medium');
+        performSearch();
+    });
+    elements.clearResults.addEventListener('click', function(e) {
+        e.preventDefault();
+        triggerHapticFeedback('light');
+        clearSearchResults();
+    });
     
-    // Быстрые действия - исправляем обработчики
+    // Быстрые действия с улучшенной обработкой касаний
     document.addEventListener('click', function(event) {
         const actionCard = event.target.closest('.action-card');
         if (actionCard) {
+            event.preventDefault();
+            triggerHapticFeedback('medium');
             const action = actionCard.dataset.action;
             if (action) {
                 handleActionClick(action);
@@ -321,15 +407,128 @@ function setupEventListeners() {
         }
     });
     
+    // Улучшенная обработка касаний для карточек
+    document.addEventListener('touchstart', function(event) {
+        const target = event.target.closest('.action-card, .category-card, .command-item, .result-item');
+        if (target) {
+            target.style.transform = 'scale(0.98)';
+        }
+    }, { passive: true });
+    
+    document.addEventListener('touchend', function(event) {
+        const target = event.target.closest('.action-card, .category-card, .command-item, .result-item');
+        if (target) {
+            setTimeout(() => {
+                target.style.transform = '';
+            }, 100);
+        }
+    }, { passive: true });
+    
     // Кнопки "Назад"
-    elements.backToMain.addEventListener('click', showMainSection);
-    elements.backFromGPS.addEventListener('click', showMainSection);
-    elements.backFromRPTerms.addEventListener('click', showMainSection);
-    elements.backFromHelperDuties.addEventListener('click', showMainSection);
-    elements.backFromChatRules.addEventListener('click', showMainSection);
-    elements.backFromMuteRules.addEventListener('click', showMainSection);
-    elements.backFromPremium.addEventListener('click', showMainSection);
-    elements.backFromCategory.addEventListener('click', showCategoriesSection);
+    const backButtons = [
+        elements.backToMain,
+        elements.backFromGPS,
+        elements.backFromRPTerms,
+        elements.backFromHelperDuties,
+        elements.backFromChatRules,
+        elements.backFromMuteRules,
+        elements.backFromPremium,
+        elements.backFromCategory
+    ];
+    
+    backButtons.forEach(button => {
+        if (button) {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                triggerHapticFeedback('light');
+                if (button === elements.backFromCategory) {
+                    showCategoriesSection();
+                } else {
+                    showMainSection();
+                }
+            });
+        }
+    });
+    
+    // Обработка свайпов для навигации
+    setupSwipeNavigation();
+}
+
+// Настройка haptic feedback
+function triggerHapticFeedback(type = 'light') {
+    if (appState.tg && appState.tg.HapticFeedback) {
+        try {
+            switch (type) {
+                case 'light':
+                    appState.tg.HapticFeedback.impactOccurred('light');
+                    break;
+                case 'medium':
+                    appState.tg.HapticFeedback.impactOccurred('medium');
+                    break;
+                case 'heavy':
+                    appState.tg.HapticFeedback.impactOccurred('heavy');
+                    break;
+                case 'success':
+                    appState.tg.HapticFeedback.notificationOccurred('success');
+                    break;
+                case 'warning':
+                    appState.tg.HapticFeedback.notificationOccurred('warning');
+                    break;
+                case 'error':
+                    appState.tg.HapticFeedback.notificationOccurred('error');
+                    break;
+            }
+        } catch (error) {
+            console.log('Haptic feedback не поддерживается');
+        }
+    }
+}
+
+// Настройка навигации свайпами
+function setupSwipeNavigation() {
+    let startX = 0;
+    let startY = 0;
+    let endX = 0;
+    let endY = 0;
+    
+    document.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    }, { passive: true });
+    
+    document.addEventListener('touchend', function(e) {
+        endX = e.changedTouches[0].clientX;
+        endY = e.changedTouches[0].clientY;
+        
+        const diffX = startX - endX;
+        const diffY = startY - endY;
+        const minSwipeDistance = 50;
+        
+        // Проверяем, что свайп достаточно длинный и горизонтальный
+        if (Math.abs(diffX) > minSwipeDistance && Math.abs(diffX) > Math.abs(diffY)) {
+            if (diffX > 0) {
+                // Свайп влево - назад
+                handleSwipeBack();
+            } else {
+                // Свайп вправо - вперед (если нужно)
+                handleSwipeForward();
+            }
+        }
+    }, { passive: true });
+}
+
+// Обработка свайпа назад
+function handleSwipeBack() {
+    if (appState.currentSection !== 'main') {
+        triggerHapticFeedback('light');
+        showMainSection();
+    }
+}
+
+// Обработка свайпа вперед
+function handleSwipeForward() {
+    // Можно добавить логику для навигации вперед
+    console.log('Swipe forward');
 }
 
 // Показать модальное окно профиля

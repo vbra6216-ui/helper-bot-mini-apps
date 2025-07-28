@@ -1,0 +1,210 @@
+/* Дополнительные мобильные оптимизации для Telegram Mini App */
+
+/* Оптимизация для устройств с вырезами (notch) */
+@supports (padding: max(0px)) {
+    :root {
+        --safe-area-inset-top: env(safe-area-inset-top);
+        --safe-area-inset-bottom: env(safe-area-inset-bottom);
+        --safe-area-inset-left: env(safe-area-inset-left);
+        --safe-area-inset-right: env(safe-area-inset-right);
+    }
+    
+    .app-container {
+        padding-top: max(0px, var(--safe-area-inset-top));
+        padding-bottom: max(0px, var(--safe-area-inset-bottom));
+        padding-left: max(0px, var(--safe-area-inset-left));
+        padding-right: max(0px, var(--safe-area-inset-right));
+    }
+    
+    .header {
+        padding-top: max(0.6rem, var(--safe-area-inset-top) + 0.2rem);
+    }
+    
+    .modal-content {
+        padding-bottom: max(2rem, var(--safe-area-inset-bottom) + 1rem);
+    }
+}
+
+/* Улучшенная производительность для мобильных */
+.action-card,
+.category-card,
+.command-item,
+.result-item,
+.btn-icon,
+.search-btn,
+.btn-clear,
+.btn-back {
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+}
+
+/* Оптимизация анимаций для мобильных */
+@media (max-width: 768px) {
+    .action-card,
+    .category-card,
+    .command-item,
+    .result-item {
+        transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+    }
+    
+    .action-card:active,
+    .category-card:active,
+    .command-item:active,
+    .result-item:active {
+        transform: scale(0.98) translateZ(0);
+    }
+}
+
+/* Улучшенная доступность для мобильных */
+@media (max-width: 768px) {
+    .action-card:focus,
+    .category-card:focus,
+    .command-item:focus,
+    .result-item:focus,
+    .btn-icon:focus,
+    .search-btn:focus,
+    .btn-clear:focus,
+    .btn-back:focus {
+        outline: 2px solid #667eea;
+        outline-offset: 2px;
+    }
+    
+    /* Улучшенная читаемость текста */
+    .action-text,
+    .category-name,
+    .command-name,
+    .result-title {
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    }
+    
+    /* Улучшенные тени для мобильных */
+    .action-card,
+    .category-card,
+    .command-item,
+    .result-item {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .action-card:hover,
+    .category-card:hover,
+    .command-item:hover,
+    .result-item:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* Оптимизация для устройств с высоким DPI */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .btn-icon,
+    .search-btn,
+    .btn-clear,
+    .btn-back {
+        border-width: 0.5px;
+    }
+    
+    .action-card,
+    .category-card,
+    .command-item,
+    .result-item {
+        border-width: 0.5px;
+    }
+}
+
+/* Улучшенная поддержка темной темы */
+@media (prefers-color-scheme: dark) {
+    .action-card,
+    .category-card,
+    .command-item,
+    .result-item {
+        background: rgba(26, 26, 46, 0.9);
+    }
+}
+
+/* Оптимизация для устройств с низким разрешением */
+@media (max-width: 320px) {
+    .logo {
+        font-size: 1rem;
+    }
+    
+    .subtitle {
+        font-size: 0.6rem;
+    }
+    
+    .action-text {
+        font-size: 0.9rem;
+    }
+    
+    .action-desc {
+        font-size: 0.75rem;
+    }
+    
+    .category-name {
+        font-size: 0.75rem;
+    }
+    
+    .command-name {
+        font-size: 0.8rem;
+    }
+    
+    .command-desc {
+        font-size: 0.7rem;
+    }
+}
+
+/* Оптимизация для устройств с вырезами */
+@supports (padding: max(0px)) {
+    .header {
+        padding-top: max(0.6rem, env(safe-area-inset-top) + 0.2rem);
+    }
+    
+    .main-content {
+        padding-bottom: max(2rem, env(safe-area-inset-bottom) + 1rem);
+    }
+    
+    .modal-content {
+        padding-bottom: max(2rem, env(safe-area-inset-bottom) + 1rem);
+    }
+}
+
+/* Улучшенная поддержка темной темы */
+@media (prefers-color-scheme: dark) {
+    .action-card,
+    .category-card,
+    .command-item,
+    .result-item {
+        background: rgba(26, 26, 46, 0.9);
+    }
+}
+
+/* Оптимизация для устройств с низким разрешением */
+@media (max-width: 320px) {
+    .logo {
+        font-size: 1rem;
+    }
+    
+    .subtitle {
+        font-size: 0.6rem;
+    }
+    
+    .action-text {
+        font-size: 0.9rem;
+    }
+    
+    .action-desc {
+        font-size: 0.75rem;
+    }
+    
+    .category-name {
+        font-size: 0.75rem;
+    }
+    
+    .command-name {
+        font-size: 0.8rem;
+    }
+    
+    .command-desc {
+        font-size: 0.7rem;
+    }
+} 
