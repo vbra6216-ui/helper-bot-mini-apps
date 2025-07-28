@@ -166,7 +166,8 @@ async function loadUserProfileFromTelegram() {
             favorites_count: getLocalStorageValue('favorites_count', 0),
             commands_used: getLocalStorageValue('commands_used', 0),
             last_active: new Date().toISOString(),
-            achievements: getLocalStorageValue('achievements', [])
+            achievements: getLocalStorageValue('achievements', []),
+            rank: getLocalStorageValue('rank', 'user') // Добавляем ранг
         };
         
         appState.userData = userData;
@@ -276,6 +277,7 @@ function saveUserDataToStorage(userData) {
         localStorage.setItem('tg_user_commands_used', JSON.stringify(userData.commands_used));
         localStorage.setItem('tg_user_achievements', JSON.stringify(userData.achievements));
         localStorage.setItem('tg_user_last_active', JSON.stringify(userData.last_active));
+        localStorage.setItem('tg_user_rank', JSON.stringify(userData.rank)); // Сохраняем ранг
     } catch (error) {
         console.error('Ошибка сохранения в localStorage:', error);
     }
@@ -375,13 +377,17 @@ function updateProfileInfo() {
         elements.profileUsername.textContent = `@${user.username}`;
         
         // Обновляем бейдж (Premium или обычный пользователь)
-        if (user.is_premium) {
-            elements.profileBadge.textContent = 'Premium';
-            elements.profileBadge.style.background = 'linear-gradient(45deg, #ffd700, #ffed4e)';
-        } else {
-            elements.profileBadge.textContent = 'User';
-            elements.profileBadge.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
+        const rank = user.rank || 'user';
+        let badgeText = 'User';
+        let badgeClass = 'profile-badge--user';
+        switch (rank) {
+            case 'vip': badgeText = 'VIP'; badgeClass = 'profile-badge--vip'; break;
+            case 'admin': badgeText = 'Admin'; badgeClass = 'profile-badge--admin'; break;
+            case 'owner': badgeText = 'Owner'; badgeClass = 'profile-badge--owner'; break;
+            default: badgeText = 'User'; badgeClass = 'profile-badge--user'; break;
         }
+        elements.profileBadge.textContent = badgeText;
+        elements.profileBadge.className = 'profile-badge ' + badgeClass;
         
         // Обновляем аватар (используем первую букву имени или фото)
         if (user.photo_url) {
