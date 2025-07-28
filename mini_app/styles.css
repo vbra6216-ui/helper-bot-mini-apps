@@ -768,19 +768,16 @@ body {
 }
 
 .modal-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(26, 26, 46, 0.98);
+    background: linear-gradient(135deg, #23244a 0%, #18192b 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
-    padding: 2rem;
-    max-width: 500px;
-    width: 90%;
-    backdrop-filter: blur(25px);
-    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
-    animation: modalSlideIn 0.3s ease;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: modalSlideIn 0.3s ease-out;
 }
 
 @keyframes modalSlideIn {
@@ -842,12 +839,12 @@ body {
 }
 
 .profile-section {
-    background: linear-gradient(135deg, #23244a 0%, #18192b 100%);
+    background: transparent;
     border-radius: 18px;
     padding: 24px;
     margin-bottom: 32px;
     color: white;
-    box-shadow: 0 8px 32px rgba(23, 22, 40, 0.3);
+    position: relative;
 }
 
 .profile-section::before {
@@ -871,8 +868,8 @@ body {
 
 .profile-avatar {
     position: relative;
-    width: 72px;
-    height: 72px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 100%);
     display: flex;
@@ -880,10 +877,11 @@ body {
     justify-content: center;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
     border: 2px solid rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
 }
 
 .avatar-inner {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bold;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
@@ -892,8 +890,8 @@ body {
     position: absolute;
     bottom: 2px;
     right: 2px;
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     background: #4ade80;
     border-radius: 50%;
     border: 2px solid white;
@@ -902,11 +900,12 @@ body {
 
 .profile-info {
     flex: 1;
+    min-width: 0;
 }
 
 .profile-name {
     margin: 0 0 6px 0;
-    font-size: 1.4em;
+    font-size: 1.3em;
     font-weight: 700;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
