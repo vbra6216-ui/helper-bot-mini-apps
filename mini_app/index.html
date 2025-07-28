@@ -2,19 +2,9 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Helper Bot">
-    <meta name="theme-color" content="#667eea">
-    <meta name="msapplication-TileColor" content="#667eea">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Helper Bot</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="mobile-optimization.css">
-    <link rel="stylesheet" href="password-protection.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
@@ -198,78 +188,7 @@
     </style>
 </head>
 <body>
-    <!-- Password Protection Screen -->
-    <div id="passwordScreen" class="password-screen">
-        <div class="password-container">
-            <div class="password-header">
-                <div class="password-logo">🔒</div>
-                <h1 class="password-title">Helper Bot</h1>
-                <p class="password-subtitle">Введите пароль для доступа</p>
-            </div>
-            
-            <div class="password-input-container">
-                <div class="password-inputs">
-                    <input type="password" class="password-digit" maxlength="1" data-index="0" autocomplete="off">
-                    <input type="password" class="password-digit" maxlength="1" data-index="1" autocomplete="off">
-                    <input type="password" class="password-digit" maxlength="1" data-index="2" autocomplete="off">
-                    <input type="password" class="password-digit" maxlength="1" data-index="3" autocomplete="off">
-                    <input type="password" class="password-digit" maxlength="1" data-index="4" autocomplete="off">
-                    <input type="password" class="password-digit" maxlength="1" data-index="5" autocomplete="off">
-                </div>
-                <div class="password-dots">
-                    <div class="password-dot" data-index="0"></div>
-                    <div class="password-dot" data-index="1"></div>
-                    <div class="password-dot" data-index="2"></div>
-                    <div class="password-dot" data-index="3"></div>
-                    <div class="password-dot" data-index="4"></div>
-                    <div class="password-dot" data-index="5"></div>
-                </div>
-            </div>
-            
-            <div class="password-error" id="passwordError">
-                <span class="error-icon">⚠️</span>
-                <span class="error-text">Неверный пароль</span>
-            </div>
-            
-            <div class="password-actions">
-                <button class="btn-clear-password" id="clearPassword">Очистить</button>
-                <button class="btn-submit-password" id="submitPassword">Войти</button>
-            </div>
-            
-            <!-- Цифровая клавиатура -->
-            <div class="numeric-keypad">
-                <div class="keypad-row">
-                    <button class="keypad-btn" data-digit="1">1</button>
-                    <button class="keypad-btn" data-digit="2">2</button>
-                    <button class="keypad-btn" data-digit="3">3</button>
-                </div>
-                <div class="keypad-row">
-                    <button class="keypad-btn" data-digit="4">4</button>
-                    <button class="keypad-btn" data-digit="5">5</button>
-                    <button class="keypad-btn" data-digit="6">6</button>
-                </div>
-                <div class="keypad-row">
-                    <button class="keypad-btn" data-digit="7">7</button>
-                    <button class="keypad-btn" data-digit="8">8</button>
-                    <button class="keypad-btn" data-digit="9">9</button>
-                </div>
-                <div class="keypad-row">
-                    <button class="keypad-btn" data-digit="0">0</button>
-                    <button class="keypad-btn backspace-btn" id="backspaceBtn">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M3 6H5H21M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            
-            <div class="password-footer">
-                <p class="password-hint">Пароль: 407264</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="app-container" id="mainApp" style="display: none;">
+    <div class="app-container">
         <!-- Header -->
         <header class="header">
             <div class="header-content">
@@ -278,11 +197,6 @@
                     <p class="subtitle">Поиск команд и справочников</p>
                 </div>
                 <div class="header-actions">
-                    <button class="btn-icon" id="logoutBtn" title="Выйти" style="display: none;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
                     <button class="btn-icon" id="burgerMenuBtn" title="Меню">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M3 12H21M3 6H21M3 18H21" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -660,8 +574,6 @@
         <div class="loading-text">Загрузка...</div>
     </div>
 
-    <script src="performance-optimization.js"></script>
-    <script src="password-system.js"></script>
     <script src="app.js"></script>
 </body>
 </html> 
