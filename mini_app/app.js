@@ -305,14 +305,31 @@ function setupEventListeners() {
         }
     });
 
+    // Подсказки при вводе
+    elements.searchInput.addEventListener('input', handleSearchInput);
+
     // Поиск по Enter и кнопке
     elements.searchInput.addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
             performSearch();
+            elements.searchSuggestions.innerHTML = '';
         }
     });
     elements.searchBtn.addEventListener('click', function() {
         performSearch();
+        elements.searchSuggestions.innerHTML = '';
+    });
+
+    // Крестик закрытия модального окна поиска
+    document.getElementById('closeSearchModal').addEventListener('click', function() {
+        hideSearchModal();
+    });
+
+    // Закрытие по клику вне модального окна
+    document.getElementById('searchModal').addEventListener('click', function(event) {
+        if (event.target === this) {
+            hideSearchModal();
+        }
     });
 
     // Кнопка очистки/закрытия результатов поиска
@@ -456,9 +473,9 @@ function getAchievementId(index) {
 
 // Обработка ввода в поиск
 function handleSearchInput(event) {
-    const query = event.target.value.toLowerCase().trim();
+    const query = elements.searchInput.value.toLowerCase().trim();
     
-    if (query.length < 2) {
+    if (query.length < 1) {
         elements.searchSuggestions.innerHTML = '';
         return;
     }
@@ -549,7 +566,7 @@ function performSearch() {
     const query = elements.searchInput.value.toLowerCase().trim();
     
     if (query.length < 2) {
-        hideSearchResults();
+        hideSearchModal();
         return;
     }
     
@@ -558,8 +575,8 @@ function performSearch() {
     // Имитируем задержку поиска
     setTimeout(() => {
         const results = performSearchLogic(query);
-        displaySearchResults(results);
-        showSearchResults(); // Всегда явно показываем меню результатов
+        displaySearchResultsModal(results);
+        showSearchModal();
         hideLoading();
         
         // Увеличиваем счетчик поисков
@@ -567,7 +584,7 @@ function performSearch() {
             updateUserSearchCount();
             updateUserCommandsUsed();
         }
-    }, 500);
+    }, 300);
 }
 
 // Логика поиска
@@ -674,14 +691,13 @@ function performSearchLogic(query) {
     return results;
 }
 
-// Отобразить результаты поиска
-function displaySearchResults(results) {
+// Отобразить результаты поиска в модальном окне
+function displaySearchResultsModal(results) {
+    const container = document.getElementById('searchModalResults');
     if (results.length === 0) {
-        elements.resultsTitle.textContent = 'Ничего не найдено';
-        elements.resultsContainer.innerHTML = '<div class="no-results">Попробуйте изменить запрос</div>';
+        container.innerHTML = '<div class="no-results">Ничего не найдено<br><span style="font-size:0.95em;opacity:0.7;">Попробуйте изменить запрос</span></div>';
     } else {
-        elements.resultsTitle.textContent = `Найдено: ${results.length}`;
-        elements.resultsContainer.innerHTML = results.map(result => `
+        container.innerHTML = results.map(result => `
             <div class="result-item">
                 <div class="result-icon">${getResultIcon(result.type)}</div>
                 <div class="result-content">
@@ -692,8 +708,6 @@ function displaySearchResults(results) {
             </div>
         `).join('');
     }
-    
-    showSearchResults();
 }
 
 // Получить иконку для результата
@@ -725,7 +739,7 @@ function hideSearchResults() {
 // Очистить результаты поиска
 function clearSearchResults() {
     elements.searchInput.value = '';
-    hideSearchResults();
+    hideSearchModal();
     showMainSection();
 }
 
@@ -1030,6 +1044,22 @@ function showLoading() {
 // Скрыть загрузку
 function hideLoading() {
     elements.loadingOverlay.style.display = 'none';
+}
+
+// Показываем модальное окно поиска
+function showSearchModal() {
+    const modal = document.getElementById('searchModal');
+    modal.classList.add('active');
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function hideSearchModal() {
+    const modal = document.getElementById('searchModal');
+    modal.classList.remove('active');
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+    document.getElementById('searchModalResults').innerHTML = '';
 }
 
 // Инициализация при загрузке страницы
