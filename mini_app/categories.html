@@ -42,7 +42,7 @@
         // Загрузка категорий
         async function loadCategories() {
             try {
-                const response = await fetch('/api/commands');
+                const response = await fetch('commands.json');
                 const commands = await response.json();
                 
                 const categoriesGrid = document.getElementById('categoriesGrid');
