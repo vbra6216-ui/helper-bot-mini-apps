@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helper Bot</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        .profile-section {
+            background: linear-gradient(135deg, #7B61FF 0%, #9B7DFF 100%);
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 32px;
+            color: white;
+            box-shadow: 0 8px 32px rgba(123, 97, 255, 0.3);
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .profile-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .profile-info h3 {
+            margin: 0 0 4px 0;
+            font-size: 1.3em;
+        }
+        
+        .profile-info p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+        
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 0.85em;
+            opacity: 0.8;
+        }
+        
+        .commands-section {
+            background: #23244a;
+            border-radius: 18px;
+            padding: 24px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 12px rgba(123, 97, 255, 0.10);
+        }
+        
+        .commands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        
+        .command-card {
+            background: #2a2c5a;
+            border-radius: 12px;
+            padding: 16px;
+            border-left: 3px solid #7B61FF;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .command-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(123, 97, 255, 0.2);
+        }
+        
+        .command-name {
+            font-weight: bold;
+            color: #7B61FF;
+            margin-bottom: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .command-desc {
+            color: #e0e0f0;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .command-category {
+            background: rgba(123, 97, 255, 0.2);
+            color: #7B61FF;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            margin-top: 8px;
+            display: inline-block;
+        }
+        
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        
+        .category-card {
+            background: #2a2c5a;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(123, 97, 255, 0.2);
+            border-color: #7B61FF;
+        }
+        
+        .category-icon {
+            font-size: 2em;
+            margin-bottom: 12px;
+        }
+        
+        .category-name {
+            font-weight: bold;
+            color: #7B61FF;
+            margin-bottom: 8px;
+        }
+        
+        .category-count {
+            color: #e0e0f0;
+            font-size: 0.9em;
+        }
+        
+        .search-container {
+            margin-bottom: 24px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 12px;
+            background: #2a2c5a;
+            color: #fff;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        
+        .search-input::placeholder {
+            color: #888;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #7B61FF;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1 class="logo">🤖 Helper Bot</h1>
+                    <p class="subtitle">Поиск команд и справочников</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon" id="burgerMenuBtn" title="Меню">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M3 12H21M3 6H21M3 18H21" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="btn-icon" id="profileBtn" title="Профиль">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="8" r="4" stroke="#7B61FF" stroke-width="2"/>
+                            <path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke="#7B61FF" stroke-width="2"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Burger Menu Dropdown -->
+        <div class="burger-menu" id="burgerMenu">
+            <div class="burger-menu-content">
+                <div class="burger-menu-header">
+                    <h3>Меню</h3>
+                    <button class="burger-menu-close" id="closeBurgerMenu">×</button>
+                </div>
+                <div class="burger-menu-items">
+                    <a href="categories.html" class="burger-menu-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="5" width="18" height="14" rx="2" stroke="#7B61FF" stroke-width="2"/>
+                            <path d="M3 8H21" stroke="#7B61FF" stroke-width="2"/>
+                        </svg>
+                        <span>Категории</span>
+                    </a>
+                    <a href="all_commands.html" class="burger-menu-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="#7B61FF" stroke-width="2"/>
+                            <path d="M14 2V8H20" stroke="#7B61FF" stroke-width="2"/>
+                        </svg>
+                        <span>Все команды</span>
+                    </a>
+                    <a href="gps.html" class="burger-menu-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2Z" stroke="#7B61FF" stroke-width="2"/>
+                            <circle cx="12" cy="9" r="2.5" stroke="#7B61FF" stroke-width="2"/>
+                        </svg>
+                        <span>GPS</span>
+                    </a>
+                    <a href="rp.html" class="burger-menu-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="#7B61FF" stroke-width="2"/>
+                            <path d="M14 2V8H20" stroke="#7B61FF" stroke-width="2"/>
+                        </svg>
+                        <span>RP-термины</span>
+                    </a>
+                    <a href="helper_duties.html" class="burger-menu-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12L11 14L15 10" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#7B61FF" stroke-width="2"/>
+                        </svg>
+                        <span>Обязанности</span>
+                    </a>
+                    <a href="chat_rules.html" class="burger-menu-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 8L22 12L18 16" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M6 8L2 12L6 16" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14 4L10 20" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Правила чата</span>
+                    </a>
+                    <a href="mute_rules.html" class="burger-menu-item">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L13.09 8.26L20 9L14 14.14L15.18 21.02L12 17.77L8.82 21.02L10 14.14L4 9L10.91 8.26L12 2Z" stroke="#7B61FF" stroke-width="2"/>
+                        </svg>
+                        <span>Правила мута</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Search Section -->
+            <section id="searchSection" class="search-section">
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <div class="search-icon">🔍</div>
+                        <input type="text" id="searchInput" class="search-input" placeholder="Поиск команд, GPS, RP-терминов...">
+                        <button id="searchBtn" class="search-btn">Найти</button>
+                    </div>
+                    <div id="searchSuggestions" class="search-suggestions"></div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section id="quickActionsSection" class="quick-actions">
+                <h2 class="section-title">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19M5 12H19" stroke="#7B61FF" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    Быстрые действия
+                </h2>
+                <div class="action-grid">
+                    <a href="categories.html" class="action-card">
+                        <div class="action-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="3" y="5" width="18" height="14" rx="2" stroke="#7B61FF" stroke-width="2"/>
+                                <path d="M3 8H21" stroke="#7B61FF" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="action-text">Категории</div>
+                        <div class="action-desc">Все разделы команд</div>
+                    </a>
+                    
+                    <a href="all_commands.html" class="action-card">
+                        <div class="action-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="#7B61FF" stroke-width="2"/>
+                                <path d="M14 2V8H20" stroke="#7B61FF" stroke-width="2"/>
+                                <path d="M16 13H8" stroke="#7B61FF" stroke-width="2"/>
+                                <path d="M16 17H8" stroke="#7B61FF" stroke-width="2"/>
+                                <path d="M10 9H8" stroke="#7B61FF" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="action-text">Все команды</div>
+                        <div class="action-desc">Полный список</div>
+                    </a>
+                    
+                    <a href="gps.html" class="action-card">
+                        <div class="action-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2Z" stroke="#7B61FF" stroke-width="2"/>
+                                <circle cx="12" cy="9" r="2.5" stroke="#7B61FF" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="action-text">GPS</div>
+                        <div class="action-desc">Локации сервера</div>
+                    </a>
+                    
+                    <a href="rp.html" class="action-card">
+                        <div class="action-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="#7B61FF" stroke-width="2"/>
+                                <path d="M14 2V8H20" stroke="#7B61FF" stroke-width="2"/>
+                                <path d="M16 13H8" stroke="#7B61FF" stroke-width="2"/>
+                                <path d="M16 17H8" stroke="#7B61FF" stroke-width="2"/>
+                                <path d="M10 9H8" stroke="#7B61FF" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="action-text">RP-термины</div>
+                        <div class="action-desc">Словарь терминов</div>
+                    </a>
+                    
+                    <a href="helper_duties.html" class="action-card">
+                        <div class="action-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 12L11 14L15 10" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#7B61FF" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="action-text">Обязанности</div>
+                        <div class="action-desc">Помощника</div>
+                    </a>
+                    
+                    <a href="chat_rules.html" class="action-card">
+                        <div class="action-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18 8L22 12L18 16" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M6 8L2 12L6 16" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M14 4L10 20" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="action-text">Правила чата</div>
+                        <div class="action-desc">Поведение в чате</div>
+                    </a>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="resultsSection" class="results-section" style="display: none;">
+                <div class="results-header">
+                    <h2 id="resultsTitle">Результаты поиска</h2>
+                    <button id="clearResults" class="btn-clear">Очистить</button>
+                </div>
+                <div id="resultsContainer" class="results-container"></div>
+            </section>
+
+            <!-- Categories Section -->
+            <section id="categoriesSection" class="categories-section" style="display: none;">
+                <div class="section-header">
+                    <h2>Категории команд</h2>
+                    <button id="backToMain" class="btn-back">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 12H5M12 19L5 12L12 5" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Назад
+                    </button>
+                </div>
+                <div id="categoriesGrid" class="categories-grid"></div>
+            </section>
+
+            <!-- GPS Section -->
+            <section id="gpsSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2>GPS Локации</h2>
+                    <button id="backFromGPS" class="btn-back">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 12H5M12 19L5 12L12 5" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Назад
+                    </button>
+                </div>
+                <div id="gpsContent" class="content-container"></div>
+            </section>
+
+            <!-- RP Terms Section -->
+            <section id="rpTermsSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2>RP Термины</h2>
+                    <button id="backFromRPTerms" class="btn-back">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 12H5M12 19L5 12L12 5" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Назад
+                    </button>
+                </div>
+                <div id="rpTermsContent" class="content-container"></div>
+            </section>
+
+            <!-- Helper Duties Section -->
+            <section id="helperDutiesSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2>Обязанности помощника</h2>
+                    <button id="backFromHelperDuties" class="btn-back">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 12H5M12 19L5 12L12 5" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Назад
+                    </button>
+                </div>
+                <div id="helperDutiesContent" class="content-container"></div>
+            </section>
+
+            <!-- Chat Rules Section -->
+            <section id="chatRulesSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2>Правила чата</h2>
+                    <button id="backFromChatRules" class="btn-back">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 12H5M12 19L5 12L12 5" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Назад
+                    </button>
+                </div>
+                <div id="chatRulesContent" class="content-container"></div>
+            </section>
+
+            <!-- Mute Rules Section -->
+            <section id="muteRulesSection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2>Правила мута</h2>
+                    <button id="backFromMuteRules" class="btn-back">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 12H5M12 19L5 12L12 5" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Назад
+                    </button>
+                </div>
+                <div id="muteRulesContent" class="content-container"></div>
+            </section>
+
+            <!-- Premium Section -->
+            <section id="premiumSection" class="premium-section" style="display: none;">
+                <div class="section-header">
+                    <h2>Премиум функции</h2>
+                    <button id="backFromPremium" class="btn-back">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 12H5M12 19L5 12L12 5" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Назад
+                    </button>
+                </div>
+                <div id="premiumContent" class="premium-content"></div>
+            </section>
+
+            <!-- Category Section -->
+            <section id="categorySection" class="content-section" style="display: none;">
+                <div class="section-header">
+                    <h2 id="categoryTitle">Категория</h2>
+                    <button id="backFromCategory" class="btn-back">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 12H5M12 19L5 12L12 5" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Назад
+                    </button>
+                </div>
+                <div id="categoryContent" class="content-container"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content profile-modal">
+            <div class="modal-header">
+                <h3>👤 Профиль пользователя</h3>
+                <button class="modal-close" id="closeProfileModal" title="Закрыть">×</button>
+            </div>
+            <div class="modal-body" id="profileContent">
+                <div class="profile-section">
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="profileAvatar">
+                            <div class="avatar-inner" id="avatarInner">👤</div>
+                            <div class="status-indicator" id="statusIndicator"></div>
+                        </div>
+                        <div class="profile-info">
+                            <h3 class="profile-name" id="profileName">Загрузка...</h3>
+                            <p class="profile-username" id="profileUsername">@username</p>
+                            <div class="profile-badge" id="profileBadge">VIP</div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-activity">
+                        <div class="activity-item">
+                            <div class="activity-icon">🔍</div>
+                            <div class="activity-info">
+                                <div class="activity-value" id="searchCount">0</div>
+                                <div class="activity-label">Поисков</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">⭐</div>
+                            <div class="activity-info">
+                                <div class="activity-value" id="favoritesCount">0</div>
+                                <div class="activity-label">Избранных</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">⚡</div>
+                            <div class="activity-info">
+                                <div class="activity-value" id="commandsUsed">0</div>
+                                <div class="activity-label">Команд</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">🕒</div>
+                            <div class="activity-info">
+                                <div class="activity-value" id="lastActive">-</div>
+                                <div class="activity-label">Активность</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-achievements">
+                        <h4>🏆 Достижения</h4>
+                        <div class="achievements-grid" id="achievementsGrid">
+                            <div class="achievement-item unlocked">
+                                <div class="achievement-icon">🔍</div>
+                                <div class="achievement-text">Первые поиски</div>
+                            </div>
+                            <div class="achievement-item">
+                                <div class="achievement-icon">⭐</div>
+                                <div class="achievement-text">Коллекционер</div>
+                            </div>
+                            <div class="achievement-item">
+                                <div class="achievement-icon">⚡</div>
+                                <div class="achievement-text">Эксперт</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">Загрузка...</div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html> 

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Команды категории - Helper Bot</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1 class="logo">🤖 Helper Bot</h1>
+                    <p class="subtitle" id="categoryTitle">Команды категории</p>
+                </div>
+                <div class="header-actions">
+                    <a href="categories.html" class="btn-icon" title="Назад">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 12H5M12 19L5 12L12 5" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-section">
+                <div class="content-container">
+                    <h3 id="categoryName">Загрузка...</h3>
+                    <div id="categoryCommandsList" class="commands-list">
+                        <div class="loading">Загрузка команд...</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Получаем параметр категории из URL
+        function getCategoryFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('category');
+        }
+
+        // Загрузка команд категории
+        async function loadCategoryCommands() {
+            const category = getCategoryFromURL();
+            
+            if (!category) {
+                document.getElementById('categoryName').textContent = 'Категория не найдена';
+                document.getElementById('categoryCommandsList').innerHTML = 
+                    '<div class="no-results">Категория не указана</div>';
+                return;
+            }
+
+            // Обновляем заголовки
+            document.getElementById('categoryTitle').textContent = `Команды: ${category}`;
+            document.getElementById('categoryName').textContent = `📁 ${category}`;
+
+            try {
+                const response = await fetch('/api/commands');
+                const commands = await response.json();
+                
+                const categoryCommands = commands.filter(cmd => cmd.category === category);
+                const commandsList = document.getElementById('categoryCommandsList');
+                
+                if (categoryCommands.length === 0) {
+                    commandsList.innerHTML = '<div class="no-results">Команды не найдены в этой категории</div>';
+                    return;
+                }
+                
+                // Обернем команды в grid контейнер
+                commandsList.innerHTML = `<div class="commands-grid">${categoryCommands.map(cmd => `
+                    <div class="command-item">
+                        <div class="command-name">${cmd.command}</div>
+                        <div class="command-desc">${cmd.description}</div>
+                    </div>
+                `).join('')}</div>`;
+                
+            } catch (error) {
+                console.error('Ошибка загрузки команд:', error);
+                document.getElementById('categoryCommandsList').innerHTML = 
+                    '<div class="no-results">Ошибка загрузки команд</div>';
+            }
+        }
+
+        // Загружаем команды при загрузке страницы
+        document.addEventListener('DOMContentLoaded', loadCategoryCommands);
+    </script>
+</body>
+</html> 

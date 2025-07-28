@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPS | Helper Bot</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { background: linear-gradient(135deg, #181a32 0%, #23244a 100%); color: #fff; font-family: 'Inter', sans-serif; }
+        .container { max-width: 950px; margin: 48px auto 40px auto; padding: 36px 32px 32px 32px; background: #20224a; border-radius: 22px; box-shadow: 0 8px 32px #0003, 0 1.5px 0 #7B61FF22 inset; }
+        .gps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; margin-top: 36px; }
+        .gps-category { background: #23244a; border-radius: 18px; box-shadow: 0 2px 12px rgba(123, 97, 255, 0.10); padding: 24px 28px; opacity: 0; transform: translateY(20px); animation: fadeInUp 0.5s forwards; transition: box-shadow 0.2s, transform 0.2s; }
+        .gps-category:hover { box-shadow: 0 8px 32px #7B61FF33, 0 1.5px 0 #7B61FF22 inset; transform: translateY(-2px) scale(1.025); }
+        .gps-category-title { font-weight: 700; font-size: 1.13em; color: #7B61FF; margin-bottom: 16px; letter-spacing: 0.01em; display: flex; align-items: center; gap: 8px; }
+        .gps-category-title svg { width: 20px; height: 20px; }
+        .gps-locations { display: flex; flex-wrap: wrap; gap: 8px; }
+        .gps-location { background: #2a2c5a; border-radius: 8px; padding: 8px 12px; font-size: 0.9em; color: #e0e0f0; cursor: pointer; transition: background 0.2s; }
+        .gps-location:hover { background: #7B61FF; color: #fff; }
+        h1 { color: #7B61FF; text-align: center; margin-bottom: 38px; font-size: 2.1em; letter-spacing: 0.01em; }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 28px; color: #7B61FF; text-decoration: none; font-weight: 600; font-size: 1.08em; background: #23244a; border-radius: 8px; padding: 10px 18px 10px 14px; box-shadow: 0 2px 8px #7B61FF11; transition: background 0.18s, color 0.18s, box-shadow 0.18s; border: none; outline: none; }
+        .back-link svg { width: 22px; height: 22px; vertical-align: middle; }
+        .back-link:hover { background: #7B61FF; color: #fff; box-shadow: 0 4px 16px #7B61FF33; }
+        @keyframes fadeInUp { to { opacity: 1; transform: none; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">
+            <svg fill="none" viewBox="0 0 24 24"><path d="M15.5 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            На главную
+        </a>
+        <h1>🗺️ GPS - Локации</h1>
+        <div id="gpsList" class="gps-grid"></div>
+    </div>
+    <script>
+    // Загружаем данные из gps.json
+    fetch('gps.json')
+        .then(response => response.json())
+        .then(data => {
+            const list = document.getElementById('gpsList');
+            Object.entries(data).forEach(([category, locations], i) => {
+                const card = document.createElement('div');
+                card.className = 'gps-category';
+                card.style.animationDelay = (i * 0.04) + 's';
+                card.innerHTML = `
+                    <div class="gps-category-title">
+                        <svg fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/></svg>
+                        ${category}
+                    </div>
+                    <div class="gps-locations">
+                        ${locations.map(location => `<div class="gps-location" onclick="copyToClipboard('${location}')">${location}</div>`).join('')}
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        })
+        .catch(error => {
+            console.error('Ошибка загрузки GPS:', error);
+            document.getElementById('gpsList').innerHTML = '<div style="color: #ff6b6b; text-align: center; padding: 40px;">Ошибка загрузки данных</div>';
+        });
+    
+    function copyToClipboard(text) {
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification(`Локация "${text}" скопирована!`);
+            }).catch(() => {
+                fallbackCopyToClipboard(text);
+            });
+        } else {
+            fallbackCopyToClipboard(text);
+        }
+    }
+    
+    function fallbackCopyToClipboard(text) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showNotification(`Локация "${text}" скопирована!`);
+        } catch (err) {
+            showNotification('Ошибка копирования');
+        }
+        document.body.removeChild(textArea);
+    }
+    
+    function showNotification(message) {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed; top: 20px; right: 20px; background: #7B61FF; color: #fff; 
+            padding: 12px 20px; border-radius: 8px; z-index: 1000; font-weight: 500;
+            box-shadow: 0 4px 16px rgba(123, 97, 255, 0.3);
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        setTimeout(() => {
+            notification.remove();
+        }, 2000);
+    }
+    </script>
+</body>
+</html> 

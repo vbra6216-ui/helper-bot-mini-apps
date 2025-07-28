@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Все команды - Helper Bot</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1 class="logo">🤖 Helper Bot</h1>
+                    <p class="subtitle">Все команды</p>
+                </div>
+                <div class="header-actions">
+                    <a href="index.html" class="btn-icon" title="Назад">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 12H5M12 19L5 12L12 5" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-section">
+                <div class="content-container">
+                    <h3>📋 Все команды</h3>
+                    <div id="allCommandsList" class="commands-list">
+                        <div class="loading">Загрузка команд...</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Загрузка всех команд
+        async function loadAllCommands() {
+            try {
+                const response = await fetch('/api/commands');
+                const commands = await response.json();
+                
+                const commandsList = document.getElementById('allCommandsList');
+                
+                if (commands.length === 0) {
+                    commandsList.innerHTML = '<div class="no-results">Команды не найдены</div>';
+                    return;
+                }
+                
+                // Группируем по категориям
+                const groupedCommands = {};
+                commands.forEach(cmd => {
+                    if (!groupedCommands[cmd.category]) {
+                        groupedCommands[cmd.category] = [];
+                    }
+                    groupedCommands[cmd.category].push(cmd);
+                });
+                
+                let html = '';
+                Object.entries(groupedCommands).forEach(([category, categoryCommands]) => {
+                    html += `<div class="command-group">
+                        <h4 class="command-category-title">${category}</h4>
+                        <div class="commands-grid">
+                            ${categoryCommands.map(cmd => `
+                                <div class="command-item">
+                                    <div class="command-name">${cmd.command}</div>
+                                    <div class="command-desc">${cmd.description}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>`;
+                });
+                
+                commandsList.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Ошибка загрузки команд:', error);
+                document.getElementById('allCommandsList').innerHTML = 
+                    '<div class="no-results">Ошибка загрузки команд</div>';
+            }
+        }
+
+        // Загружаем команды при загрузке страницы
+        document.addEventListener('DOMContentLoaded', loadAllCommands);
+    </script>
+</body>
+</html> 

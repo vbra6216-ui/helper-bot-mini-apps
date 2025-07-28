@@ -1,0 +1,1172 @@
+[
+    {
+        "command": "/help",
+        "description": "команды сервера",
+        "category": "Общие"
+    },
+    {
+        "command": "/stats",
+        "description": "статистика персонажа",
+        "category": "Общие"
+    },
+    {
+        "command": "/inv",
+        "description": "открыть инвентарь",
+        "category": "Общие"
+    },
+    {
+        "command": "/valute",
+        "description": "забрать деньги с аукциона",
+        "category": "Общие"
+    },
+    {
+        "command": "/recovery",
+        "description": "вернуть предметы",
+        "category": "Общие"
+    },
+    {
+        "command": "/vip",
+        "description": "список vip статусов",
+        "category": "Общие"
+    },
+    {
+        "command": "/dreward",
+        "description": "ежедневные награды",
+        "category": "Общие"
+    },
+    {
+        "command": "/ach",
+        "description": "достижения",
+        "category": "Общие"
+    },
+    {
+        "command": "/donate",
+        "description": "донат меню",
+        "category": "Общие"
+    },
+    {
+        "command": "/topday",
+        "description": "лидер дня пополнений",
+        "category": "Общие"
+    },
+    {
+        "command": "/selldonate",
+        "description": "продать донат (пополнения)",
+        "category": "Общие"
+    },
+    {
+        "command": "/sellgold",
+        "description": "продать золотые монеты",
+        "category": "Общие"
+    },
+    {
+        "command": "/sellpump",
+        "description": "продать тыквы",
+        "category": "Общие"
+    },
+    {
+        "command": "/sellseno",
+        "description": "продать сено игроку",
+        "category": "Общие"
+    },
+    {
+        "command": "/pass",
+        "description": "показать паспорт",
+        "category": "Общие"
+    },
+    {
+        "command": "/med",
+        "description": "показать мед.карту",
+        "category": "Общие"
+    },
+    {
+        "command": "/lic",
+        "description": "показать лицензии",
+        "category": "Общие"
+    },
+    {
+        "command": "/leaders",
+        "description": "список лидеров/заместителей онлайн",
+        "category": "Общие"
+    },
+    {
+        "command": "/warnlog",
+        "description": "посмотреть предупреждения",
+        "category": "Общие"
+    },
+    {
+        "command": "/phonebook",
+        "description": "телефонная книга",
+        "category": "Общие"
+    },
+    {
+        "command": "/number",
+        "description": "узнать номер телефона игрока",
+        "category": "Общие"
+    },
+    {
+        "command": "/history",
+        "description": "посмотреть историю ников",
+        "category": "Общие"
+    },
+    {
+        "command": "/pay",
+        "description": "передать деньги",
+        "category": "Общие"
+    },
+    {
+        "command": "/anim",
+        "description": "список анимаций",
+        "category": "Общие"
+    },
+    {
+        "command": "/gps",
+        "description": "навигатор",
+        "category": "Общие"
+    },
+    {
+        "command": "/healme",
+        "description": "использовать аптечку",
+        "category": "Общие"
+    },
+    {
+        "command": "/domkrat",
+        "description": "использовать домкрат",
+        "category": "Общие"
+    },
+    {
+        "command": "/time",
+        "description": "узнать точное время",
+        "category": "Общие"
+    },
+    {
+        "command": "/adlist",
+        "description": "список адвокатов онлайн",
+        "category": "Общие"
+    },
+    {
+        "command": "/liclist",
+        "description": "список лицензеров онлайн",
+        "category": "Общие"
+    },
+    {
+        "command": "/car",
+        "description": "меню автомобиля",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/pts",
+        "description": "показать ПТС игроку",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/e",
+        "description": "завести двигатель",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/trank",
+        "description": "открыть багажник",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/company",
+        "description": "основное меню компании",
+        "category": "Общие"
+    },
+    {
+        "command": "/wedding",
+        "description": "жениться с игроком",
+        "category": "Семья"
+    },
+    {
+        "command": "/divorce",
+        "description": "развестись",
+        "category": "Семья"
+    },
+    {
+        "command": "/kiss",
+        "description": "поцеловать партнера",
+        "category": "Семья"
+    },
+    {
+        "command": "/minet",
+        "description": "оральные ласки",
+        "category": "Семья"
+    },
+    {
+        "command": "/garage",
+        "description": "информация и управление гаражом",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/sellgarage",
+        "description": "продажа гаража государству",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/sellmygarage",
+        "description": "продажа гаража игроку",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/buygarage",
+        "description": "купить гараж у государства",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/promo",
+        "description": "ввести промокод (для получения награды)",
+        "category": "Общие"
+    },
+    {
+        "command": "/timeskin",
+        "description": "надеть временный скин (промокод)",
+        "category": "Общие"
+    },
+    {
+        "command": "/showvb",
+        "description": "показать военный билет",
+        "category": "Общие"
+    },
+    {
+        "command": "/radio",
+        "description": "выбрать радиоволну",
+        "category": "Общие"
+    },
+    {
+        "command": "/ad",
+        "description": "подать объявление",
+        "category": "Общение"
+    },
+    {
+        "command": "/ratingnews",
+        "description": "посмотреть рейтинг СМИ",
+        "category": "Общие"
+    },
+    {
+        "command": "/notify",
+        "description": "посмотреть уведомления",
+        "category": "Общие"
+    },
+    {
+        "command": "/vacancery",
+        "description": "посмотреть какие сейчас проходят собеседования",
+        "category": "Общие"
+    },
+    {
+        "command": "/mlist",
+        "description": "посмотреть список механиков",
+        "category": "Общие"
+    },
+    {
+        "command": "/prefix",
+        "description": "установить себе префикс",
+        "category": "Общие"
+    },
+    {
+        "command": "/mp3",
+        "description": "включить mp3 плеер",
+        "category": "Общие"
+    },
+    {
+        "command": "/jbl",
+        "description": "включить jbl колонку",
+        "category": "Общие"
+    },
+    {
+        "command": "/music",
+        "description": "включить музыку в машине",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/cameditgui",
+        "description": "скрыть весь интерфейс",
+        "category": "Общие"
+    },
+    {
+        "command": "/headmove",
+        "description": "вкл/выкл поворот головы",
+        "category": "Общие"
+    },
+    {
+        "command": "/hi",
+        "description": "пожать руку",
+        "category": "Общение"
+    },
+    {
+        "command": "/chat",
+        "description": "меню настроек чата",
+        "category": "Общение"
+    },
+    {
+        "command": "/style",
+        "description": "выбрать стиль общения/походки/боя",
+        "category": "Общие"
+    },
+    {
+        "command": "/election",
+        "description": "посмотреть итоги выборов президента",
+        "category": "Общие"
+    },
+    {
+        "command": "/flower",
+        "description": "подарить цветы игроку",
+        "category": "Общение"
+    },
+    {
+        "command": "/dl",
+        "description": "просмотр информации о транспортном средстве",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/asc",
+        "description": "посмотреть акссесуары на игроке",
+        "category": "Общие"
+    },
+    {
+        "command": "/livepass",
+        "description": "боевой пропуск",
+        "category": "Общие"
+    },
+    {
+        "command": "/taxlist",
+        "description": "список таксистов на сервере",
+        "category": "Общие"
+    },
+    {
+        "command": "/mlist",
+        "description": "список механиков на сервере",
+        "category": "Общие"
+    },
+    {
+        "command": "/jskill",
+        "description": "навыки работ",
+        "category": "Общие"
+    },
+    {
+        "command": "/call",
+        "description": "позвонить игроку",
+        "category": "Общение"
+    },
+    {
+        "command": "/sms",
+        "description": "отправить сообщение",
+        "category": "Общение"
+    },
+    {
+        "command": "/n",
+        "description": "нон рп общение",
+        "category": "Общение"
+    },
+    {
+        "command": "/s",
+        "description": "кричать",
+        "category": "Общение"
+    },
+    {
+        "command": "/w",
+        "description": "шептать",
+        "category": "Общение"
+    },
+    {
+        "command": "/m",
+        "description": "мегафон в транспорте (полиция)",
+        "category": "Общение"
+    },
+    {
+        "command": "/r",
+        "description": "рация (Гос)",
+        "category": "Общение"
+    },
+    {
+        "command": "/f",
+        "description": "рация (Опг)",
+        "category": "Общение"
+    },
+    {
+        "command": "/d",
+        "description": "чат департамента",
+        "category": "Общение"
+    },
+    {
+        "command": "/gnews",
+        "description": "отправить сообщение в гос.новости",
+        "category": "Общение"
+    },
+    {
+        "command": "/me",
+        "description": "действие от первого лица",
+        "category": "Общение"
+    },
+    {
+        "command": "/do",
+        "description": "действия от третьего лица",
+        "category": "Общение"
+    },
+    {
+        "command": "/try",
+        "description": "действие с успехом 50%",
+        "category": "Общение"
+    },
+    {
+        "command": "/todo",
+        "description": "общение с действиями",
+        "category": "Общение"
+    },
+    {
+        "command": "/vmute",
+        "description": "игнорировать игрока в голосовом чате",
+        "category": "Общение"
+    },
+    {
+        "command": "/muteinfo",
+        "description": "просмотр времени ограничения чата",
+        "category": "Общение"
+    },
+    {
+        "command": "/pc",
+        "description": "написать в чат зоопарка",
+        "category": "Общение"
+    },
+    {
+        "command": "/home",
+        "description": "информация о доме",
+        "category": "Дом"
+    },
+    {
+        "command": "/live",
+        "description": "подселить игрока в свой дом",
+        "category": "Дом"
+    },
+    {
+        "command": "/liveout",
+        "description": "выселиться из дома",
+        "category": "Дом"
+    },
+    {
+        "command": "/sellhome",
+        "description": "продать дом государству",
+        "category": "Дом"
+    },
+    {
+        "command": "/sellmyhome",
+        "description": "продать дом игроку",
+        "category": "Дом"
+    },
+    {
+        "command": "/hlock",
+        "description": "закрыть/открыть номер в отеле",
+        "category": "Дом"
+    },
+    {
+        "command": "/buyhouse",
+        "description": "купить дом от государства",
+        "category": "Дом"
+    },
+    {
+        "command": "/gmove",
+        "description": "переместить недостроенную теплицу",
+        "category": "Дом"
+    },
+    {
+        "command": "/green",
+        "description": "взаимодействие с личной фермой/теплицей",
+        "category": "Дом"
+    },
+    {
+        "command": "/business",
+        "description": "меню бизнеса",
+        "category": "Бизнес"
+    },
+    {
+        "command": "/fuel",
+        "description": "мониторинг АЗС",
+        "category": "Бизнес"
+    },
+    {
+        "command": "/sellmybiz",
+        "description": "продать бизнес игроку",
+        "category": "Бизнес"
+    },
+    {
+        "command": "/fbiz",
+        "description": "показать финансовую статистику игроку",
+        "category": "Бизнес"
+    },
+    {
+        "command": "/lmenu",
+        "description": "меню лидера",
+        "category": "Лидеры/заместители"
+    },
+    {
+        "command": "/gnews",
+        "description": "гос. новости",
+        "category": "Лидеры/заместители"
+    },
+    {
+        "command": "/news",
+        "description": "меню новостей",
+        "category": "Лидеры/заместители"
+    },
+    {
+        "command": "/invite",
+        "description": "принять игрока",
+        "category": "Лидеры/заместители"
+    },
+    {
+        "command": "/uninvite",
+        "description": "уволить игрока",
+        "category": "Лидеры/заместители"
+    },
+    {
+        "command": "/fwarn",
+        "description": "выдать выговор",
+        "category": "Лидеры/заместители"
+    },
+    {
+        "command": "/unfwarn",
+        "description": "снять выговор",
+        "category": "Лидеры/заместители"
+    },
+    {
+        "command": "/offmembers",
+        "description": "список игроков оффлайн",
+        "category": "Лидеры/заместители"
+    },
+    {
+        "command": "/offuninvite",
+        "description": "уволить игрока оффлайн",
+        "category": "Лидеры/заместители"
+    },
+    {
+        "command": "/setskin",
+        "description": "выдать служебную одежду",
+        "category": "Лидеры/заместители"
+    },
+    {
+        "command": "/rang",
+        "description": "повысить / понизить в должности",
+        "category": "Лидеры/заместители"
+    },
+    {
+        "command": "/l",
+        "description": "чат лидеров (только для гос. организаций)",
+        "category": "Лидеры/заместители"
+    },
+    {
+        "command": "/fmute",
+        "description": "забрать рацию в чате организации",
+        "category": "Лидеры/заместители"
+    },
+    {
+        "command": "/blacklist",
+        "description": "черный список фракции",
+        "category": "Лидеры/заместители"
+    },
+    {
+        "command": "/lk",
+        "description": "закрыть/открыть транспорт",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/car",
+        "description": "меню транспорта",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/fill",
+        "description": "купить канистру на АЗС",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/fillcar",
+        "description": "заправить автомобиль канистрой",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/gass",
+        "description": "заправить водный транспорт",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/park",
+        "description": "припарковать транспорт",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/rem",
+        "description": "починить автомобиль, используя рем.комплект",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/domkrat",
+        "description": "перевернуть автомобиль, используя домкрат",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/sellcar",
+        "description": "продать транспорт государству",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/sellmycar",
+        "description": "продать транспорт игроку",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/changecar",
+        "description": "обменяться транспортом с игроком",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/pts",
+        "description": "показать ПТС на машину",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/e",
+        "description": "завести двигатель",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/trank",
+        "description": "открыть багажник",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/unrent",
+        "description": "завершить аренду скутера",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/eject",
+        "description": "выкинуть игрока",
+        "category": "Автомобиль"
+    },
+    {
+        "command": "/fammenu",
+        "description": "меню семьи",
+        "category": "Семья"
+    },
+    {
+        "command": "/famonline",
+        "description": "список семьи онлайн",
+        "category": "Семья"
+    },
+    {
+        "command": "/fam",
+        "description": "рация семьи",
+        "category": "Семья"
+    },
+    {
+        "command": "/faminvite",
+        "description": "принять в семью",
+        "category": "Семья"
+    },
+    {
+        "command": "/funinvite",
+        "description": "выгнать игрока из семьи",
+        "category": "Семья"
+    },
+    {
+        "command": "/famkick",
+        "description": "исключить из семьи",
+        "category": "Семья"
+    },
+    {
+        "command": "/famsklad",
+        "description": "меню склада семьи",
+        "category": "Семья"
+    },
+    {
+        "command": "/fammute",
+        "description": "блокировка рации в семье",
+        "category": "Семья"
+    },
+    {
+        "command": "/famcar",
+        "description": "меню автопарка семьи",
+        "category": "Семья"
+    },
+    {
+        "command": "/fpark",
+        "description": "припарковать семейный транспорт",
+        "category": "Семья"
+    },
+    {
+        "command": "/fgive",
+        "description": "выдать разрешение на склад",
+        "category": "Семья"
+    },
+    {
+        "command": "/ftake",
+        "description": "забрать разрешение на склад",
+        "category": "Семья"
+    },
+    {
+        "command": "/funloadcar",
+        "description": "выгрузить весь семейный транспорт (для главы)",
+        "category": "Семья"
+    },
+    {
+        "command": "/fgiverank",
+        "description": "изменить ранг члену семьи",
+        "category": "Семья"
+    },
+    {
+        "command": "/ffrank",
+        "description": "выдать ранг игроку не в сети",
+        "category": "Семья"
+    },
+    {
+        "command": "/fbl",
+        "description": "добавить в чёрный список семьи",
+        "category": "Семья"
+    },
+    {
+        "command": "/funbl",
+        "description": "убрать из чёрного списка семьи",
+        "category": "Семья"
+    },
+    {
+        "command": "/fcontract",
+        "description": "посмотреть семейные контракты",
+        "category": "Семья"
+    },
+    {
+        "command": "/company",
+        "description": "основное меню компании (тк)",
+        "category": "Транспортные/Авиакомпании"
+    },
+    {
+        "command": "/business",
+        "description": "меню компании (авиа)",
+        "category": "Транспортные/Авиакомпании"
+    },
+    {
+        "command": "/air",
+        "description": "меню пилота",
+        "category": "Транспортные/Авиакомпании"
+    },
+    {
+        "command": "/order",
+        "description": "список заказов компании",
+        "category": "Транспортные/Авиакомпании"
+    },
+    {
+        "command": "/tc",
+        "description": "чат дальнобойщиков",
+        "category": "Транспортные/Авиакомпании"
+    },
+    {
+        "command": "/x",
+        "description": "чат пилотов",
+        "category": "Транспортные/Авиакомпании"
+    },
+    {
+        "command": "/tmute",
+        "description": "забрать рацию",
+        "category": "Транспортные/Авиакомпании"
+    },
+    {
+        "command": "/cargo",
+        "description": "меню управления грузом",
+        "category": "Транспортные/Авиакомпании"
+    },
+    {
+        "command": "/tcompanysell",
+        "description": "продать компанию игроку",
+        "category": "Транспортные/Авиакомпании"
+    },
+    {
+        "command": "/heal",
+        "description": "предложить лечение игроку",
+        "category": "Больница"
+    },
+    {
+        "command": "/out",
+        "description": "выписать пациента из больницы",
+        "category": "Больница"
+    },
+    {
+        "command": "/gmedcard",
+        "description": "выписать медицинскую карту",
+        "category": "Больница"
+    },
+    {
+        "command": "/healaddict",
+        "description": "сделать укол от наркозависимости",
+        "category": "Больница"
+    },
+    {
+        "command": "/changesex",
+        "description": "предложить операцию по смене пола",
+        "category": "Больница"
+    },
+    {
+        "command": "/mhelp",
+        "description": "принять вызов диспетчера",
+        "category": "Больница"
+    },
+    {
+        "command": "/military",
+        "description": "начать учения (тренировка)",
+        "category": "Армия"
+    },
+    {
+        "command": "/endmilitary",
+        "description": "завершить учения",
+        "category": "Армия"
+    },
+    {
+        "command": "/givevb",
+        "description": "выдать воееный билет",
+        "category": "Армия"
+    },
+    {
+        "command": "/finery",
+        "description": "выдать наряд",
+        "category": "Армия"
+    },
+    {
+        "command": "/unfinery",
+        "description": "снять наряд",
+        "category": "Армия"
+    },
+    {
+        "command": "/finerylist",
+        "description": "список тех у кого есть наряд",
+        "category": "Армия"
+    },
+    {
+        "command": "/warehouse",
+        "description": "посмотреть склад организации",
+        "category": "Армия"
+    },
+    {
+        "command": "/r",
+        "description": "рация подразделения",
+        "category": "Армия"
+    },
+    {
+        "command": "/rn",
+        "description": "OOC рация подразделения",
+        "category": "Армия"
+    },
+    {
+        "command": "/cuff",
+        "description": "надеть наручники на игрока",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/uncuff",
+        "description": "снять наручники с игрока",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/su",
+        "description": "объявить игрока в розыск",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/push",
+        "description": "затолкнуть игрока в машину",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/clear",
+        "description": "убрать из розыска игрока",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/ud",
+        "description": "показать удостоверение",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/take",
+        "description": "провести обыск и изъять лицензии",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/break",
+        "description": "установить объект",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/ticket",
+        "description": "выписать штраф игроку",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/pt",
+        "description": "начать погоню за преступником",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/hold",
+        "description": "вести игрока за собой",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/wanted",
+        "description": "список подозреваемых преступников",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/ejectout",
+        "description": "выкинуть игрока из закрытого автомобиля",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/arrest",
+        "description": "посадить игрока в КПЗ",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/post",
+        "description": "заступить на пост",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/warehouse",
+        "description": "посмотреть склад организации",
+        "category": "ГИБДД/МВД"
+    },
+    {
+        "command": "/givelic",
+        "description": "меню продажи лицензий / оформить лицензию адвоката",
+        "category": "Правительство"
+    },
+    {
+        "command": "/free",
+        "description": "освободить заключенного из КПЗ",
+        "category": "Правительство"
+    },
+    {
+        "command": "/takeout",
+        "description": "выгнать игрока из здания",
+        "category": "Правительство"
+    },
+    {
+        "command": "/alarm",
+        "description": "отправить оповещение в МВД (сигнализация)",
+        "category": "Правительство"
+    },
+    {
+        "command": "/demote",
+        "description": "разжаловать игрока в звании",
+        "category": "Правительство"
+    },
+    {
+        "command": "/cname",
+        "description": "одобрить заявления на смени ника",
+        "category": "Правительство"
+    },
+    {
+        "command": "/editsu",
+        "description": "редактировать УК страны",
+        "category": "Правительство"
+    },
+    {
+        "command": "/warehouse",
+        "description": "посмотреть склад организации",
+        "category": "Правительство"
+    },
+    {
+        "command": "/hold",
+        "description": "вести за собой игрока",
+        "category": "Правительство"
+    },
+    {
+        "command": "/nmenu",
+        "description": "меню новостей",
+        "category": "ТРК"
+    },
+    {
+        "command": "/edit",
+        "description": "меню редактирования объявлений",
+        "category": "ТРК"
+    },
+    {
+        "command": "/ud",
+        "description": "удостоверение сотрудника СМИ",
+        "category": "ТРК"
+    },
+    {
+        "command": "/showads",
+        "description": "статистика сотрудников (онлайн)",
+        "category": "ТРК"
+    },
+    {
+        "command": "/efir",
+        "description": "панель управления эфиром",
+        "category": "ТРК"
+    },
+    {
+        "command": "/addefir",
+        "description": "добавить участника в эфир",
+        "category": "ТРК"
+    },
+    {
+        "command": "/break",
+        "description": "установить объект",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/ticket",
+        "description": "выписать штраф",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/pt",
+        "description": "начать погоню за преступником",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/hold",
+        "description": "вести за собой игрока",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/wanted",
+        "description": "список подозреваемых преступников",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/ejectout",
+        "description": "выкинуть игрока из закрытого автомобиля",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/arrest",
+        "description": "посадить игрока в КПЗ",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/post",
+        "description": "заступить на пост",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/warehouse",
+        "description": "посмотреть склад организации",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/passcard",
+        "description": "выдать/забрать ключи-карту от офиса",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/deal",
+        "description": "предложить сделку",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/demote",
+        "description": "понизить игрока МВД/Армии",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/tipster",
+        "description": "взять шпионский жучок (в служебном т/с)",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/tipster",
+        "description": "установить жучок на игрока",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/tipster",
+        "description": "деактивировать жучок",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/fr",
+        "description": "рацию внедрённой организации",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/frn",
+        "description": "нрп рация внедрённой организации",
+        "category": "ФСБ"
+    },
+    {
+        "command": "/mafiawar",
+        "description": "забить стрелу за бизнес",
+        "category": "Криминальные структуры"
+    },
+    {
+        "command": "/bizlist",
+        "description": "список захваченных бизнесов",
+        "category": "Криминальные структуры"
+    },
+    {
+        "command": "/mafiawartime",
+        "description": "узнать время до следующей стрелы",
+        "category": "Криминальные структуры"
+    },
+    {
+        "command": "/warelock",
+        "description": "открыть/закрыть склад",
+        "category": "Криминальные структуры"
+    },
+    {
+        "command": "/makegun",
+        "description": "собрать оружие из материалов",
+        "category": "Криминальные структуры"
+    },
+    {
+        "command": "/sellgun",
+        "description": "продать оружие",
+        "category": "Криминальные структуры"
+    },
+    {
+        "command": "/sellmat",
+        "description": "продать материалы",
+        "category": "Криминальные структуры"
+    },
+    {
+        "command": "/members",
+        "description": "посмотреть онлайн организации",
+        "category": "Криминальные структуры"
+    },
+    {
+        "command": "/reave",
+        "description": "похитить игрока",
+        "category": "Криминальные структуры"
+    },
+    {
+        "command": "/hold",
+        "description": "повести игрока за собой",
+        "category": "Криминальные структуры"
+    },
+    {
+        "command": "/push",
+        "description": "затолкать игрока в машину",
+        "category": "Криминальные структуры"
+    },
+    {
+        "command": "/rf",
+        "description": "сказать в рацию похищенного",
+        "category": "Криминальные структуры"
+    },
+    {
+        "command": "/f",
+        "description": "рация организации",
+        "category": "Криминальные структуры"
+    },
+    {
+        "command": "/fn",
+        "description": "нрп рация",
+        "category": "Криминальные структуры"
+    },
+    {
+        "command": "/ram",
+        "description": "взломать дверь дома/квартиры",
+        "category": "МЧС"
+    }
+]

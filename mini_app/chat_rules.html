@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Правила чата | Helper Bot</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { background: linear-gradient(135deg, #181a32 0%, #23244a 100%); color: #fff; font-family: 'Inter', sans-serif; }
+        .container { max-width: 950px; margin: 48px auto 40px auto; padding: 36px 32px 32px 32px; background: #20224a; border-radius: 22px; box-shadow: 0 8px 32px #0003, 0 1.5px 0 #7B61FF22 inset; }
+        .rules-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; margin-top: 36px; }
+        .rule-category { background: #23244a; border-radius: 18px; box-shadow: 0 2px 12px rgba(123, 97, 255, 0.10); padding: 24px 28px; opacity: 0; transform: translateY(20px); animation: fadeInUp 0.5s forwards; transition: box-shadow 0.2s, transform 0.2s; }
+        .rule-category:hover { box-shadow: 0 8px 32px #7B61FF33, 0 1.5px 0 #7B61FF22 inset; transform: translateY(-2px) scale(1.025); }
+        .rule-category-title { font-weight: 700; font-size: 1.13em; color: #7B61FF; margin-bottom: 16px; letter-spacing: 0.01em; display: flex; align-items: center; gap: 8px; }
+        .rule-category-title svg { width: 20px; height: 20px; }
+        .rule-list { display: flex; flex-direction: column; gap: 12px; }
+        .rule-item { background: #2a2c5a; border-radius: 12px; padding: 16px 20px; font-size: 0.95em; color: #e0e0f0; line-height: 1.5; border-left: 3px solid #7B61FF; }
+        .rule-item.forbidden { border-left-color: #ff6b6b; }
+        .rule-item.allowed { border-left-color: #51cf66; }
+        h1 { color: #7B61FF; text-align: center; margin-bottom: 38px; font-size: 2.1em; letter-spacing: 0.01em; }
+        .back-link { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 28px; color: #7B61FF; text-decoration: none; font-weight: 600; font-size: 1.08em; background: #23244a; border-radius: 8px; padding: 10px 18px 10px 14px; box-shadow: 0 2px 8px #7B61FF11; transition: background 0.18s, color 0.18s, box-shadow 0.18s; border: none; outline: none; }
+        .back-link svg { width: 22px; height: 22px; vertical-align: middle; }
+        .back-link:hover { background: #7B61FF; color: #fff; box-shadow: 0 4px 16px #7B61FF33; }
+        @keyframes fadeInUp { to { opacity: 1; transform: none; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">
+            <svg fill="none" viewBox="0 0 24 24"><path d="M15.5 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            На главную
+        </a>
+        <h1>💬 Правила чата</h1>
+        <div id="rulesList" class="rules-grid"></div>
+    </div>
+    <script>
+    // Загружаем данные из support_chat_rules.json
+    fetch('support_chat_rules.json')
+        .then(response => response.json())
+        .then(data => {
+            const list = document.getElementById('rulesList');
+            Object.entries(data).forEach(([category, rules], i) => {
+                const card = document.createElement('div');
+                card.className = 'rule-category';
+                card.style.animationDelay = (i * 0.04) + 's';
+                const isForbidden = category === 'Запрещается';
+                const icon = isForbidden ? '❌' : '✅';
+                const iconSvg = isForbidden ? 
+                    '<svg fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><line x1="15" y1="9" x2="9" y2="15" stroke="currentColor" stroke-width="2"/><line x1="9" y1="9" x2="15" y2="15" stroke="currentColor" stroke-width="2"/></svg>' :
+                    '<svg fill="none" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+                card.innerHTML = `
+                    <div class="rule-category-title">
+                        ${iconSvg}
+                        ${category}
+                    </div>
+                    <div class="rule-list">
+                        ${rules.map(rule => `<div class="rule-item ${isForbidden ? 'forbidden' : 'allowed'}">${rule}</div>`).join('')}
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        })
+        .catch(error => {
+            console.error('Ошибка загрузки правил чата:', error);
+            document.getElementById('rulesList').innerHTML = '<div style="color: #ff6b6b; text-align: center; padding: 40px;">Ошибка загрузки данных</div>';
+        });
+    </script>
+</body>
+</html> 
