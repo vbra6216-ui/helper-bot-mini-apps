@@ -42,7 +42,7 @@
         // Загрузка всех команд
         async function loadAllCommands() {
             try {
-                const response = await fetch('/api/commands');
+                const response = await fetch('commands.json');
                 const commands = await response.json();
                 
                 const commandsList = document.getElementById('allCommandsList');
