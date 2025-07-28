@@ -81,31 +81,46 @@ const elements = {
 
 // Инициализация приложения
 async function initializeApp() {
-    // Инициализируем Telegram Web App
-    if (window.Telegram && window.Telegram.WebApp) {
-        appState.tg = window.Telegram.WebApp;
-        appState.tg.ready();
-        appState.tg.expand();
-        
-        // Устанавливаем тему
-        if (appState.tg.colorScheme === 'dark') {
+    try {
+        // Инициализируем Telegram Web App
+        if (window.Telegram && window.Telegram.WebApp) {
+            appState.tg = window.Telegram.WebApp;
+            appState.tg.ready();
+            appState.tg.expand();
+            
+            // Устанавливаем тему
+            if (appState.tg.colorScheme === 'dark') {
+                document.body.classList.add('dark-theme');
+            }
+            
+            console.log('Telegram Web App инициализирован');
+        } else {
+            console.log('Telegram Web App недоступен, запускаем в режиме тестирования');
+            // Устанавливаем темную тему по умолчанию для тестирования
             document.body.classList.add('dark-theme');
         }
         
-        console.log('Telegram Web App инициализирован');
+        // Загружаем все данные сразу
+        await loadAllData();
+        
+        // Настраиваем обработчики событий
+        setupEventListeners();
+        
+        // Показываем главную страницу
+        showMainSection();
+        
+        // Загружаем профиль пользователя
+        await loadUserProfileFromTelegram();
+        
+    } catch (error) {
+        console.error('Ошибка инициализации приложения:', error);
+        
+        // Показываем главную страницу даже при ошибке
+        showMainSection();
+        
+        // Пытаемся загрузить профиль пользователя
+        await loadUserProfileFromTelegram();
     }
-    
-    // Загружаем все данные сразу
-    await loadAllData();
-    
-    // Настраиваем обработчики событий
-    setupEventListeners();
-    
-    // Показываем главную страницу
-    showMainSection();
-    
-    // Загружаем профиль пользователя
-    await loadUserProfileFromTelegram();
 }
 
 // Загрузка команд из API
@@ -134,40 +149,63 @@ async function loadCommands() {
 // Загрузка профиля пользователя из Telegram
 async function loadUserProfileFromTelegram() {
     try {
-        if (!appState.tg) {
-            console.error('Telegram Web App не инициализирован');
-            return;
+        let userData = null;
+        
+        // Проверяем, есть ли Telegram Web App
+        if (appState.tg && appState.tg.initDataUnsafe?.user) {
+            const user = appState.tg.initDataUnsafe.user;
+            console.log('Данные пользователя из Telegram:', user);
+            
+            // Формируем объект пользователя из Telegram
+            userData = {
+                telegram_id: user.id,
+                username: user.username || `user_${user.id}`,
+                first_name: user.first_name || 'Пользователь',
+                last_name: user.last_name || '',
+                language_code: user.language_code || 'ru',
+                is_premium: user.is_premium || false,
+                added_to_attachment_menu: user.added_to_attachment_menu || false,
+                allows_write_to_pm: user.allows_write_to_pm || false,
+                photo_url: user.photo_url || null,
+                // Статистика из локального хранилища или API
+                search_count: getLocalStorageValue('search_count', 0),
+                favorites_count: getLocalStorageValue('favorites_count', 0),
+                commands_used: getLocalStorageValue('commands_used', 0),
+                last_active: new Date().toISOString(),
+                achievements: getLocalStorageValue('achievements', [])
+            };
+        } else {
+            // Создаем fallback данные пользователя для тестирования
+            console.log('Telegram Web App не доступен, создаем тестового пользователя');
+            
+            // Пытаемся получить сохраненные данные из localStorage
+            const savedUserId = localStorage.getItem('tg_user_id');
+            const savedUsername = localStorage.getItem('tg_user_username');
+            const savedFirstName = localStorage.getItem('tg_user_first_name');
+            
+            userData = {
+                telegram_id: savedUserId || Math.floor(Math.random() * 1000000),
+                username: savedUsername || 'test_user',
+                first_name: savedFirstName || 'Тестовый',
+                last_name: 'Пользователь',
+                language_code: 'ru',
+                is_premium: false,
+                added_to_attachment_menu: false,
+                allows_write_to_pm: false,
+                photo_url: null,
+                // Статистика из локального хранилища
+                search_count: getLocalStorageValue('search_count', 0),
+                favorites_count: getLocalStorageValue('favorites_count', 0),
+                commands_used: getLocalStorageValue('commands_used', 0),
+                last_active: new Date().toISOString(),
+                achievements: getLocalStorageValue('achievements', [])
+            };
+            
+            // Сохраняем тестовые данные
+            localStorage.setItem('tg_user_id', userData.telegram_id);
+            localStorage.setItem('tg_user_username', userData.username);
+            localStorage.setItem('tg_user_first_name', userData.first_name);
         }
-        
-        // Получаем данные пользователя из Telegram
-        const initData = appState.tg.initData;
-        const user = appState.tg.initDataUnsafe?.user;
-        
-        if (!user) {
-            console.error('Данные пользователя не найдены');
-            return;
-        }
-        
-        console.log('Данные пользователя из Telegram:', user);
-        
-        // Формируем объект пользователя
-        const userData = {
-            telegram_id: user.id,
-            username: user.username || `user_${user.id}`,
-            first_name: user.first_name || 'Пользователь',
-            last_name: user.last_name || '',
-            language_code: user.language_code || 'ru',
-            is_premium: user.is_premium || false,
-            added_to_attachment_menu: user.added_to_attachment_menu || false,
-            allows_write_to_pm: user.allows_write_to_pm || false,
-            photo_url: user.photo_url || null,
-            // Статистика из локального хранилища или API
-            search_count: getLocalStorageValue('search_count', 0),
-            favorites_count: getLocalStorageValue('favorites_count', 0),
-            commands_used: getLocalStorageValue('commands_used', 0),
-            last_active: new Date().toISOString(),
-            achievements: getLocalStorageValue('achievements', [])
-        };
         
         appState.userData = userData;
         updateProfileInfo();
@@ -176,7 +214,29 @@ async function loadUserProfileFromTelegram() {
         saveUserDataToStorage(userData);
         
     } catch (error) {
-        console.error('Ошибка загрузки профиля из Telegram:', error);
+        console.error('Ошибка загрузки профиля:', error);
+        
+        // Создаем минимальные данные пользователя в случае ошибки
+        const fallbackUserData = {
+            telegram_id: Math.floor(Math.random() * 1000000),
+            username: 'user',
+            first_name: 'Пользователь',
+            last_name: '',
+            language_code: 'ru',
+            is_premium: false,
+            added_to_attachment_menu: false,
+            allows_write_to_pm: false,
+            photo_url: null,
+            search_count: 0,
+            favorites_count: 0,
+            commands_used: 0,
+            last_active: new Date().toISOString(),
+            achievements: []
+        };
+        
+        appState.userData = fallbackUserData;
+        updateProfileInfo();
+        saveUserDataToStorage(fallbackUserData);
     }
 }
 
