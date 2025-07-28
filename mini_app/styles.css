@@ -1222,725 +1222,92 @@ body {
     background: rgba(102, 126, 234, 0.7);
 }
 
-/* Мобильные оптимизации */
-* {
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-input, textarea {
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
-}
-
-/* Улучшенная производительность для мобильных */
-.action-card,
-.category-card,
-.command-item,
-.result-item,
-.btn-icon,
-.search-btn,
-.btn-clear,
-.btn-back {
-    will-change: transform;
-    backface-visibility: hidden;
-    transform: translateZ(0);
-}
-
-/* Плавные переходы для мобильных */
-.action-card:hover,
-.category-card:hover,
-.command-item:hover,
-.result-item:hover {
-    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
-}
-
-/* Оптимизация для устройств с высоким DPI */
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .btn-icon,
-    .search-btn,
-    .btn-clear,
-    .btn-back {
-        border-width: 0.5px;
-    }
-    
-    .action-card,
-    .category-card,
-    .command-item,
-    .result-item {
-        border-width: 0.5px;
-    }
-}
-
-/* Улучшенная доступность для мобильных */
+/* Responsive Design */
 @media (max-width: 768px) {
-    .action-card:focus,
-    .category-card:focus,
-    .command-item:focus,
-    .result-item:focus,
-    .btn-icon:focus,
-    .search-btn:focus,
-    .btn-clear:focus,
-    .btn-back:focus {
-        outline: 2px solid #667eea;
-        outline-offset: 2px;
-    }
-    
-    /* Улучшенная читаемость текста */
-    .action-text,
-    .category-name,
-    .command-name,
-    .result-title {
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-    }
-    
-    /* Улучшенные тени для мобильных */
-    .action-card,
-    .category-card,
-    .command-item,
-    .result-item {
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    }
-    
-    .action-card:hover,
-    .category-card:hover,
-    .command-item:hover,
-    .result-item:hover {
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-    }
-}
-
-/* Оптимизация для устройств с вырезами */
-@supports (padding: max(0px)) {
-    .header {
-        padding-top: max(0.6rem, env(safe-area-inset-top) + 0.2rem);
-    }
-    
-    .main-content {
-        padding-bottom: max(2rem, env(safe-area-inset-bottom) + 1rem);
-    }
-    
-    .modal-content {
-        padding-bottom: max(2rem, env(safe-area-inset-bottom) + 1rem);
-    }
-}
-
-/* Улучшенная поддержка темной темы */
-@media (prefers-color-scheme: dark) {
-    .action-card,
-    .category-card,
-    .command-item,
-    .result-item {
-        background: rgba(26, 26, 46, 0.9);
-    }
-}
-
-/* Оптимизация для устройств с низким разрешением */
-@media (max-width: 320px) {
-    .logo {
-        font-size: 1rem;
-    }
-    
-    .subtitle {
-        font-size: 0.6rem;
-    }
-    
-    .action-text {
-        font-size: 0.9rem;
-    }
-    
-    .action-desc {
-        font-size: 0.75rem;
-    }
-    
-    .category-name {
-        font-size: 0.75rem;
-    }
-    
-    .command-name {
-        font-size: 0.8rem;
-    }
-    
-    .command-desc {
-        font-size: 0.7rem;
-    }
-}
-
-/* Responsive Design - Mobile First Approach */
-@media (max-width: 768px) {
-    /* Header адаптация */
-    .header {
-        padding: 0.4rem 0;
-        margin: 0 2px;
-    }
-    
     .header-content {
         padding: 0 1rem;
-        gap: 0.5rem;
     }
     
-    .logo {
-        font-size: 1.2rem;
-        margin-bottom: 0.1rem;
-    }
-    
-    .subtitle {
-        font-size: 0.7rem;
-    }
-    
-    .btn-icon {
-        width: 36px;
-        height: 36px;
-        padding: 0.5rem;
-        border-radius: 10px;
-    }
-    
-    .btn-icon svg {
-        width: 16px;
-        height: 16px;
-    }
-    
-    /* Main Content адаптация */
     .main-content {
         padding: 0 1rem;
-        margin-top: 0.5rem;
-    }
-    
-    /* Search адаптация */
-    .search-section {
-        padding: 1rem 0 1rem;
-    }
-    
-    .search-input-wrapper {
-        flex-direction: column;
-        gap: 0.75rem;
-        padding: 0.75rem;
-        border-radius: 14px;
-    }
-    
-    .search-input {
-        font-size: 1rem;
-        padding: 0.75rem;
-    }
-    
-    .search-btn {
-        width: 100%;
-        padding: 0.75rem;
-        font-size: 1rem;
-        border-radius: 10px;
-    }
-    
-    .search-suggestions {
-        max-height: 250px;
-        border-radius: 10px;
-    }
-    
-    .suggestion-item {
-        padding: 0.75rem;
-        gap: 0.5rem;
-    }
-    
-    .suggestion-icon {
-        font-size: 1.1rem;
-    }
-    
-    .suggestion-text {
-        font-size: 0.9rem;
-    }
-    
-    .suggestion-desc {
-        font-size: 0.8rem;
-    }
-    
-    /* Quick Actions адаптация */
-    .quick-actions {
-        padding: 1rem 0;
-    }
-    
-    .section-title {
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
-        gap: 6px;
-    }
-    
-    .section-title svg {
-        width: 18px;
-        height: 18px;
     }
     
     .action-grid {
         grid-template-columns: 1fr;
-        gap: 0.75rem;
-        max-width: 100%;
-    }
-    
-    .action-card {
-        padding: 1.25rem;
-        border-radius: 14px;
-        margin: 0 0.5rem;
-    }
-    
-    .action-icon {
-        font-size: 2rem;
-        margin-bottom: 0.75rem;
-    }
-    
-    .action-icon svg {
-        width: 28px;
-        height: 28px;
-    }
-    
-    .action-text {
-        font-size: 1rem;
-        margin-bottom: 0.4rem;
-    }
-    
-    .action-desc {
-        font-size: 0.85rem;
-    }
-    
-    /* Results адаптация */
-    .results-section {
-        padding: 1rem 0;
-    }
-    
-    .results-header {
-        margin-bottom: 1rem;
-        padding: 0 0.5rem;
-    }
-    
-    .results-header h2 {
-        font-size: 1.2rem;
-    }
-    
-    .btn-clear {
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
-        border-radius: 10px;
-    }
-    
-    .result-item {
-        padding: 0.75rem 1rem;
-        gap: 0.75rem;
-    }
-    
-    .result-icon {
-        font-size: 1.3rem;
-    }
-    
-    .result-title {
-        font-size: 0.95rem;
-    }
-    
-    .result-description {
-        font-size: 0.85rem;
-    }
-    
-    .result-category {
-        font-size: 0.75rem;
-    }
-    
-    /* Categories адаптация */
-    .categories-section {
-        padding: 1rem 0;
-    }
-    
-    .section-header {
-        margin-bottom: 1rem;
-        padding: 0 0.5rem;
-    }
-    
-    .section-header h2 {
-        font-size: 1.2rem;
-    }
-    
-    .btn-back {
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
-        border-radius: 10px;
-        gap: 4px;
-    }
-    
-    .btn-back svg {
-        width: 14px;
-        height: 14px;
+        gap: 1rem;
     }
     
     .categories-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 0.75rem;
-        max-width: 100%;
-        padding: 0 0.5rem;
     }
     
-    .category-card {
-        padding: 1rem;
-        border-radius: 12px;
-    }
-    
-    .category-icon {
-        font-size: 1.8rem;
-        margin-bottom: 0.4rem;
-    }
-    
-    .category-name {
-        font-size: 0.85rem;
-        margin-bottom: 0.2rem;
-    }
-    
-    .category-count {
-        font-size: 0.75rem;
-    }
-    
-    /* Content адаптация */
-    .content-section {
-        padding: 1rem 0;
-    }
-    
-    .content-container {
-        margin: 0 0.5rem;
-        padding: 1.5rem;
-        border-radius: 14px;
-    }
-    
-    .content-section h3 {
-        font-size: 1.1rem;
-        margin-bottom: 0.75rem;
-    }
-    
-    .content-item {
-        padding: 0.75rem;
-        margin-bottom: 0.5rem;
-        border-radius: 10px;
-    }
-    
-    /* Commands адаптация */
     .commands-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 0.75rem;
     }
     
-    .command-item {
-        padding: 1rem;
-        border-radius: 10px;
+    .search-input-wrapper {
+        flex-direction: column;
+        gap: 1rem;
     }
     
-    .command-name {
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
+    .search-btn {
+        width: 100%;
     }
     
-    .command-desc {
-        font-size: 0.8rem;
-        margin-bottom: 0.5rem;
+    .logo {
+        font-size: 1.3rem;
     }
     
-    .command-category {
-        font-size: 0.7rem;
-        padding: 3px 6px;
-    }
-    
-    /* Modal адаптация */
-    .modal-content {
-        max-width: 95%;
-        width: 95%;
-        padding: 1.5rem;
-        border-radius: 16px;
-    }
-    
-    .modal-header h3 {
-        font-size: 1.2rem;
-    }
-    
-    .modal-close {
-        width: 36px;
-        height: 36px;
-        font-size: 1.5rem;
-    }
-    
-    /* Profile Modal адаптация */
-    .profile-modal {
-        max-width: 95%;
-        padding: 1rem;
-    }
-    
-    .profile-section {
-        padding: 1.5rem;
-        border-radius: 16px;
-    }
-    
-    .profile-header {
-        gap: 12px;
-        margin-bottom: 1.5rem;
-    }
-    
-    .profile-avatar {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .avatar-inner {
-        font-size: 24px;
-    }
-    
-    .profile-name {
-        font-size: 1.2rem;
-        margin-bottom: 4px;
-    }
-    
-    .profile-username {
-        font-size: 0.85rem;
-        margin-bottom: 6px;
-    }
-    
-    .profile-badge {
-        font-size: 0.75rem;
-        padding: 3px 8px;
-    }
-    
-    .profile-activity {
-        grid-template-columns: 1fr;
-        gap: 12px;
-        margin-bottom: 1.5rem;
-    }
-    
-    .activity-item {
-        padding: 12px;
-        border-radius: 12px;
-        gap: 8px;
-    }
-    
-    .activity-icon {
-        font-size: 18px;
-        width: 36px;
-        height: 36px;
-    }
-    
-    .activity-value {
-        font-size: 1.1rem;
-    }
-    
-    .activity-label {
+    .subtitle {
         font-size: 0.75rem;
     }
     
-    .profile-achievements {
-        padding: 1rem;
-        border-radius: 12px;
+    .btn-icon {
+        width: 34px;
+        height: 34px;
+        padding: 0.4rem;
     }
     
-    .profile-achievements h4 {
-        font-size: 1rem;
-        margin-bottom: 12px;
+    .btn-icon svg {
+        width: 15px;
+        height: 15px;
     }
     
-    .achievements-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-    }
-    
-    .achievement-item {
-        padding: 8px 6px;
-        border-radius: 8px;
-    }
-    
-    .achievement-icon {
-        font-size: 20px;
-        margin-bottom: 4px;
-    }
-    
-    .achievement-text {
-        font-size: 0.65rem;
-    }
-    
-    /* Burger Menu адаптация */
     .burger-menu-content {
-        top: 8px;
-        right: 8px;
-        width: 160px;
-        max-height: 280px;
-        border-radius: 12px;
-    }
-    
-    .burger-menu-header {
-        padding: 0.6rem 0.75rem;
-    }
-    
-    .burger-menu-header h3 {
-        font-size: 0.85rem;
-    }
-    
-    .burger-menu-close {
-        width: 24px;
-        height: 24px;
-        font-size: 1.1rem;
+        top: 10px;
+        right: 10px;
+        width: 140px;
+        max-height: 250px;
     }
     
     .burger-menu-item {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.8rem;
-        gap: 6px;
-    }
-    
-    .burger-menu-item svg {
-        width: 12px;
-        height: 12px;
+        padding: 0.6rem 0.75rem;
+        font-size: 0.75rem;
     }
     
     .burger-menu-item span {
-        font-size: 0.8rem;
-    }
-    
-    /* Loading адаптация */
-    .loading-spinner {
-        width: 40px;
-        height: 40px;
-        border-width: 3px;
-    }
-    
-    .loading-text {
-        font-size: 1rem;
-    }
-    
-    /* Premium адаптация */
-    .premium-header h2 {
-        font-size: 1.5rem;
-    }
-    
-    .premium-header p {
-        font-size: 1rem;
-    }
-    
-    .premium-features {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        padding: 0 0.5rem;
-    }
-    
-    .premium-feature {
-        padding: 1.5rem;
-        border-radius: 14px;
-    }
-    
-    .feature-icon {
-        font-size: 2rem;
-        margin-bottom: 0.75rem;
-    }
-    
-    .feature-text h3 {
-        font-size: 1.1rem;
-    }
-    
-    .feature-text p {
-        font-size: 0.9rem;
-    }
-    
-    /* Achievement Notification адаптация */
-    .achievement-notification {
-        top: 10px;
-        right: 10px;
-        left: 10px;
-        max-width: none;
-        border-radius: 12px;
-        padding: 12px;
-    }
-    
-    .notification-content {
-        gap: 8px;
-    }
-    
-    .notification-icon {
-        font-size: 20px;
-    }
-    
-    .notification-title {
-        font-size: 0.85rem;
-    }
-    
-    .notification-desc {
         font-size: 0.75rem;
     }
 }
 
 @media (max-width: 480px) {
-    /* Extra Small Devices */
-    .header-content {
-        padding: 0 0.75rem;
-    }
-    
-    .main-content {
-        padding: 0 0.75rem;
-    }
-    
-    .logo {
-        font-size: 1.1rem;
-    }
-    
-    .subtitle {
-        font-size: 0.65rem;
-    }
-    
-    .btn-icon {
-        width: 32px;
-        height: 32px;
-        padding: 0.4rem;
-    }
-    
-    .btn-icon svg {
-        width: 14px;
-        height: 14px;
-    }
-    
-    .search-input-wrapper {
-        padding: 0.6rem;
-        border-radius: 12px;
-    }
-    
-    .search-input {
-        font-size: 0.95rem;
-        padding: 0.6rem;
-    }
-    
-    .search-btn {
-        padding: 0.6rem;
-        font-size: 0.95rem;
-    }
-    
-    .action-card {
-        padding: 1rem;
-        margin: 0 0.25rem;
-    }
-    
-    .action-icon {
-        font-size: 1.8rem;
-    }
-    
-    .action-icon svg {
-        width: 24px;
-        height: 24px;
-    }
-    
-    .action-text {
-        font-size: 0.95rem;
-    }
-    
-    .action-desc {
-        font-size: 0.8rem;
-    }
-    
     .categories-grid {
         grid-template-columns: 1fr;
         gap: 0.5rem;
-        padding: 0 0.25rem;
+    }
+    
+    .commands-grid {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
     }
     
     .category-card {
+        padding: 0.75rem;
+    }
+    
+    .command-item {
         padding: 0.75rem;
     }
     
@@ -1956,179 +1323,12 @@ input, textarea {
         font-size: 0.7rem;
     }
     
-    .command-item {
-        padding: 0.75rem;
-    }
-    
     .command-name {
-        font-size: 0.85rem;
-    }
-    
-    .command-desc {
-        font-size: 0.75rem;
-    }
-    
-    .command-category {
-        font-size: 0.65rem;
-        padding: 2px 5px;
-    }
-    
-    .modal-content {
-        padding: 1rem;
-    }
-    
-    .profile-section {
-        padding: 1rem;
-    }
-    
-    .profile-avatar {
-        width: 50px;
-        height: 50px;
-    }
-    
-    .avatar-inner {
-        font-size: 20px;
-    }
-    
-    .profile-name {
-        font-size: 1.1rem;
-    }
-    
-    .profile-username {
         font-size: 0.8rem;
     }
     
-    .profile-badge {
+    .command-desc {
         font-size: 0.7rem;
-        padding: 2px 6px;
-    }
-    
-    .activity-item {
-        padding: 10px;
-    }
-    
-    .activity-icon {
-        font-size: 16px;
-        width: 32px;
-        height: 32px;
-    }
-    
-    .activity-value {
-        font-size: 1rem;
-    }
-    
-    .activity-label {
-        font-size: 0.7rem;
-    }
-    
-    .achievement-item {
-        padding: 6px 4px;
-    }
-    
-    .achievement-icon {
-        font-size: 18px;
-    }
-    
-    .achievement-text {
-        font-size: 0.6rem;
-    }
-    
-    .burger-menu-content {
-        width: 140px;
-        max-height: 240px;
-    }
-    
-    .burger-menu-item {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.75rem;
-    }
-    
-    .burger-menu-item svg {
-        width: 10px;
-        height: 10px;
-    }
-    
-    .burger-menu-item span {
-        font-size: 0.75rem;
-    }
-}
-
-/* Landscape ориентация для мобильных */
-@media (max-width: 768px) and (orientation: landscape) {
-    .header {
-        padding: 0.3rem 0;
-    }
-    
-    .main-content {
-        padding: 0 1rem;
-        margin-top: 0.25rem;
-    }
-    
-    .search-section {
-        padding: 0.75rem 0;
-    }
-    
-    .quick-actions {
-        padding: 0.75rem 0;
-    }
-    
-    .action-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.5rem;
-    }
-    
-    .categories-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 0.5rem;
-    }
-    
-    .profile-activity {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Touch-friendly элементы */
-@media (max-width: 768px) {
-    .btn-icon,
-    .search-btn,
-    .btn-clear,
-    .btn-back,
-    .modal-close,
-    .burger-menu-close {
-        min-height: 44px;
-        min-width: 44px;
-    }
-    
-    .action-card,
-    .category-card,
-    .command-item,
-    .result-item,
-    .suggestion-item {
-        min-height: 44px;
-    }
-    
-    .search-input {
-        min-height: 44px;
-    }
-}
-
-/* Safe Area для устройств с вырезами */
-@supports (padding: max(0px)) {
-    .app-container {
-        padding-left: max(0px, env(safe-area-inset-left));
-        padding-right: max(0px, env(safe-area-inset-right));
-        padding-top: max(0px, env(safe-area-inset-top));
-        padding-bottom: max(0px, env(safe-area-inset-bottom));
-    }
-    
-    .header {
-        padding-left: max(0px, env(safe-area-inset-left));
-        padding-right: max(0px, env(safe-area-inset-right));
-    }
-    
-    .main-content {
-        padding-left: max(1rem, env(safe-area-inset-left) + 0.5rem);
-        padding-right: max(1rem, env(safe-area-inset-right) + 0.5rem);
     }
 } 
 
