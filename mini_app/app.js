@@ -562,15 +562,15 @@ function performSearch() {
 // Логика поиска
 function performSearchLogic(query) {
     const results = [];
-    
+    const words = query.split(/\s+/).filter(Boolean);
+    if (words.length === 0) return results;
+
     // Поиск по командам
     if (appState.commands.length > 0) {
-        const matchingCommands = appState.commands.filter(cmd => 
-            cmd.command.toLowerCase().includes(query) ||
-            cmd.description.toLowerCase().includes(query) ||
-            cmd.category.toLowerCase().includes(query)
-        );
-        
+        const matchingCommands = appState.commands.filter(cmd => {
+            const text = `${cmd.command} ${cmd.description} ${cmd.category}`.toLowerCase();
+            return words.some(word => text.includes(word));
+        });
         results.push(...matchingCommands.map(cmd => ({
             type: 'command',
             title: cmd.command,
@@ -578,16 +578,15 @@ function performSearchLogic(query) {
             category: cmd.category
         })));
     }
-    
+
     // Поиск по GPS данным
     if (appState.gpsData) {
         Object.entries(appState.gpsData).forEach(([category, locations]) => {
             if (Array.isArray(locations)) {
-                const matchingLocations = locations.filter(location => 
-                    location.toLowerCase().includes(query) ||
-                    category.toLowerCase().includes(query)
-                );
-                
+                const matchingLocations = locations.filter(location => {
+                    const text = `${location} ${category}`.toLowerCase();
+                    return words.some(word => text.includes(word));
+                });
                 results.push(...matchingLocations.map(location => ({
                     type: 'gps',
                     title: location,
@@ -597,12 +596,12 @@ function performSearchLogic(query) {
             }
         });
     }
-    
+
     // Поиск по RP терминам
     if (appState.rpTerms) {
         Object.entries(appState.rpTerms).forEach(([term, description]) => {
-            if (term.toLowerCase().includes(query) || 
-                description.toLowerCase().includes(query)) {
+            const text = `${term} ${description}`.toLowerCase();
+            if (words.some(word => text.includes(word))) {
                 results.push({
                     type: 'rp',
                     title: term,
@@ -612,16 +611,15 @@ function performSearchLogic(query) {
             }
         });
     }
-    
+
     // Поиск по обязанностям хелпера
     if (appState.helperDuties) {
         Object.entries(appState.helperDuties).forEach(([section, duties]) => {
             if (Array.isArray(duties)) {
-                const matchingDuties = duties.filter(duty => 
-                    duty.toLowerCase().includes(query) ||
-                    section.toLowerCase().includes(query)
-                );
-                
+                const matchingDuties = duties.filter(duty => {
+                    const text = `${duty} ${section}`.toLowerCase();
+                    return words.some(word => text.includes(word));
+                });
                 results.push(...matchingDuties.map(duty => ({
                     type: 'helper',
                     title: duty,
@@ -631,12 +629,12 @@ function performSearchLogic(query) {
             }
         });
     }
-    
+
     // Поиск по правилам чата
     if (appState.chatRules) {
         Object.entries(appState.chatRules).forEach(([rule, description]) => {
-            if (rule.toLowerCase().includes(query) || 
-                description.toLowerCase().includes(query)) {
+            const text = `${rule} ${description}`.toLowerCase();
+            if (words.some(word => text.includes(word))) {
                 results.push({
                     type: 'chat',
                     title: rule,
@@ -646,12 +644,12 @@ function performSearchLogic(query) {
             }
         });
     }
-    
+
     // Поиск по правилам мута
     if (appState.muteRules) {
         Object.entries(appState.muteRules).forEach(([rule, description]) => {
-            if (rule.toLowerCase().includes(query) || 
-                description.toLowerCase().includes(query)) {
+            const text = `${rule} ${description}`.toLowerCase();
+            if (words.some(word => text.includes(word))) {
                 results.push({
                     type: 'mute',
                     title: rule,
@@ -661,7 +659,7 @@ function performSearchLogic(query) {
             }
         });
     }
-    
+
     return results;
 }
 
