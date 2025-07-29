@@ -352,9 +352,8 @@
                 if (now - auth.timestamp < 24 * 60 * 60 * 1000) {
                     // Проверяем IP и устройство
                     if (auth.ip === getCurrentIP() && auth.device === getCurrentDevice()) {
-                                        // Автоматически авторизуем
-                window.location.href = 'admin_panel.html';
-                        return true;
+                        // Не делаем автоматический редирект, пусть пользователь сам введет код
+                        return false;
                     }
                 }
             }
@@ -471,11 +470,6 @@
             const device = getDeviceInfo();
             document.getElementById('deviceInfo').textContent = `${device.type} (${device.platform})`;
             document.getElementById('ipInfo').textContent = ip;
-            
-            // Проверяем сохраненную авторизацию
-            if (checkSavedAuth()) {
-                return;
-            }
             
             // Фокус на поле ввода
             document.getElementById('adminCode').focus();
