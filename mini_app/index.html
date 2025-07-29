@@ -14,64 +14,10 @@
     <title>Helper Bot</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="mobile-optimization.css">
-    <link rel="stylesheet" href="login.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     
-    <!-- 🔒 Темная система входа (скрыта по умолчанию) -->
-    <div class="login-overlay" id="loginOverlay" style="display: none;">
-        <div class="login-container">
-            <!-- Заголовок -->
-            <div class="login-header">
-                <div class="login-icon">🔒</div>
-                <h1 class="login-title">Helper Bot</h1>
-                <p class="login-subtitle">Введите пароль для доступа</p>
-            </div>
 
-            <!-- Поля для ввода пароля -->
-            <div class="login-fields" id="loginFields">
-                <div class="login-field" data-index="0"></div>
-                <div class="login-field" data-index="1"></div>
-                <div class="login-field" data-index="2"></div>
-                <div class="login-field" data-index="3"></div>
-                <div class="login-field" data-index="4"></div>
-                <div class="login-field" data-index="5"></div>
-            </div>
-
-            <!-- Точки индикации -->
-            <div class="login-dots" id="loginDots">
-                <div class="login-dot" data-index="0"></div>
-                <div class="login-dot" data-index="1"></div>
-                <div class="login-dot" data-index="2"></div>
-                <div class="login-dot" data-index="3"></div>
-                <div class="login-dot" data-index="4"></div>
-                <div class="login-dot" data-index="5"></div>
-            </div>
-
-            <!-- Кнопки действий -->
-            <div class="login-actions">
-                <button class="login-btn clear" id="clearBtn">Очистить</button>
-                <button class="login-btn enter" id="enterBtn">Войти</button>
-            </div>
-
-            <!-- Цифровая клавиатура -->
-            <div class="login-keypad" id="loginKeypad">
-                <button class="login-key" data-digit="1">1</button>
-                <button class="login-key" data-digit="2">2</button>
-                <button class="login-key" data-digit="3">3</button>
-                <button class="login-key" data-digit="4">4</button>
-                <button class="login-key" data-digit="5">5</button>
-                <button class="login-key" data-digit="6">6</button>
-                <button class="login-key" data-digit="7">7</button>
-                <button class="login-key" data-digit="8">8</button>
-                <button class="login-key" data-digit="9">9</button>
-                <button class="login-key zero" data-digit="0">0</button>
-                <button class="login-key backspace" id="backspaceBtn">⌫</button>
-            </div>
-
-
-        </div>
-    </div>
     <style>
         .profile-section {
             background: linear-gradient(135deg, #7B61FF 0%, #9B7DFF 100%);
@@ -725,8 +671,36 @@
         <div class="loading-text">Загрузка...</div>
     </div>
 
+    <script>
+        // Проверка авторизации при загрузке
+        function checkAuth() {
+            const isAuthenticated = localStorage.getItem('isAuthenticated');
+            const authTimestamp = localStorage.getItem('authTimestamp');
+            
+            if (isAuthenticated && authTimestamp) {
+                const now = Date.now();
+                const authTime = parseInt(authTimestamp);
+                const hoursSinceAuth = (now - authTime) / (1000 * 60 * 60);
+                
+                // Авторизация действительна 24 часа
+                if (hoursSinceAuth < 24) {
+                    return true;
+                } else {
+                    // Очищаем устаревшую авторизацию
+                    localStorage.removeItem('isAuthenticated');
+                    localStorage.removeItem('authTimestamp');
+                }
+            }
+            
+            return false;
+        }
+
+        // Если не авторизован, перенаправляем на страницу входа
+        if (!checkAuth()) {
+            window.location.href = 'login.html';
+        }
+    </script>
     <script src="performance-optimization.js"></script>
-    <script src="login-system.js"></script>
     <script src="app.js"></script>
 </body>
 </html> 

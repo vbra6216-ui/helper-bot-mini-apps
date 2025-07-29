@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Helper Bot - Вход">
+    <meta name="theme-color" content="#667eea">
+    <meta name="msapplication-TileColor" content="#667eea">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="HandheldFriendly" content="true">
+    <title>Helper Bot - Вход</title>
+    <link rel="stylesheet" href="login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <!-- 🔒 Темная система входа -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-container">
+            <!-- Заголовок -->
+            <div class="login-header">
+                <div class="login-icon">🔒</div>
+                <h1 class="login-title">Helper Bot</h1>
+                <p class="login-subtitle">Введите пароль для доступа</p>
+            </div>
+
+            <!-- Поля для ввода пароля -->
+            <div class="login-fields" id="loginFields">
+                <div class="login-field" data-index="0"></div>
+                <div class="login-field" data-index="1"></div>
+                <div class="login-field" data-index="2"></div>
+                <div class="login-field" data-index="3"></div>
+                <div class="login-field" data-index="4"></div>
+                <div class="login-field" data-index="5"></div>
+            </div>
+
+            <!-- Точки индикации -->
+            <div class="login-dots" id="loginDots">
+                <div class="login-dot" data-index="0"></div>
+                <div class="login-dot" data-index="1"></div>
+                <div class="login-dot" data-index="2"></div>
+                <div class="login-dot" data-index="3"></div>
+                <div class="login-dot" data-index="4"></div>
+                <div class="login-dot" data-index="5"></div>
+            </div>
+
+            <!-- Кнопки действий -->
+            <div class="login-actions">
+                <button class="login-btn clear" id="clearBtn">Очистить</button>
+                <button class="login-btn enter" id="enterBtn">Войти</button>
+            </div>
+
+            <!-- Цифровая клавиатура -->
+            <div class="login-keypad" id="loginKeypad">
+                <button class="login-key" data-digit="1">1</button>
+                <button class="login-key" data-digit="2">2</button>
+                <button class="login-key" data-digit="3">3</button>
+                <button class="login-key" data-digit="4">4</button>
+                <button class="login-key" data-digit="5">5</button>
+                <button class="login-key" data-digit="6">6</button>
+                <button class="login-key" data-digit="7">7</button>
+                <button class="login-key" data-digit="8">8</button>
+                <button class="login-key" data-digit="9">9</button>
+                <button class="login-key zero" data-digit="0">0</button>
+                <button class="login-key backspace" id="backspaceBtn">⌫</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 🔒 Система входа
+        class LoginSystem {
+            constructor() {
+                this.password = '407264'; // Пароль по умолчанию
+                this.currentInput = '';
+                this.currentIndex = 0;
+                this.maxLength = 6;
+                
+                this.init();
+            }
+
+            init() {
+                // Проверяем авторизацию при загрузке
+                if (this.checkAuth()) {
+                    this.redirectToMain();
+                    return;
+                }
+
+                this.bindEvents();
+                this.updateDisplay();
+                this.focusCurrentField();
+            }
+
+            checkAuth() {
+                const isAuthenticated = localStorage.getItem('isAuthenticated');
+                const authTimestamp = localStorage.getItem('authTimestamp');
+                
+                if (isAuthenticated && authTimestamp) {
+                    const now = Date.now();
+                    const authTime = parseInt(authTimestamp);
+                    const hoursSinceAuth = (now - authTime) / (1000 * 60 * 60);
+                    
+                    // Авторизация действительна 24 часа
+                    if (hoursSinceAuth < 24) {
+                        return true;
+                    } else {
+                        // Очищаем устаревшую авторизацию
+                        localStorage.removeItem('isAuthenticated');
+                        localStorage.removeItem('authTimestamp');
+                    }
+                }
+                
+                return false;
+            }
+
+            redirectToMain() {
+                // Перенаправляем на главную страницу
+                window.location.href = 'index.html';
+            }
+
+            bindEvents() {
+                // Цифровые кнопки
+                document.querySelectorAll('.login-key[data-digit]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const digit = e.target.dataset.digit;
+                        this.addDigit(digit);
+                    });
+                });
+
+                // Кнопка Backspace
+                const backspaceBtn = document.getElementById('backspaceBtn');
+                if (backspaceBtn) {
+                    backspaceBtn.addEventListener('click', () => {
+                        this.removeDigit();
+                    });
+                }
+
+                // Кнопка очистить
+                const clearBtn = document.getElementById('clearBtn');
+                if (clearBtn) {
+                    clearBtn.addEventListener('click', () => {
+                        this.clearAll();
+                    });
+                }
+
+                // Кнопка войти
+                const enterBtn = document.getElementById('enterBtn');
+                if (enterBtn) {
+                    enterBtn.addEventListener('click', () => {
+                        this.checkPassword();
+                    });
+                }
+
+                // Обработка клавиатуры
+                document.addEventListener('keydown', (e) => {
+                    this.handleKeydown(e);
+                });
+
+                // Обработка вставки из буфера
+                document.addEventListener('paste', (e) => {
+                    this.handlePaste(e);
+                });
+            }
+
+            addDigit(digit) {
+                if (this.currentInput.length < this.maxLength) {
+                    this.currentInput += digit;
+                    this.currentIndex = this.currentInput.length;
+                    this.updateDisplay();
+                    this.focusCurrentField();
+                    
+                    // Автоматический переход к следующему полю
+                    if (this.currentInput.length < this.maxLength) {
+                        setTimeout(() => {
+                            this.focusCurrentField();
+                        }, 100);
+                    }
+                }
+            }
+
+            removeDigit() {
+                if (this.currentInput.length > 0) {
+                    this.currentInput = this.currentInput.slice(0, -1);
+                    this.currentIndex = this.currentInput.length;
+                    this.updateDisplay();
+                    this.focusCurrentField();
+                }
+            }
+
+            clearAll() {
+                this.currentInput = '';
+                this.currentIndex = 0;
+                this.updateDisplay();
+                this.focusCurrentField();
+                this.clearError();
+            }
+
+            checkPassword() {
+                if (this.currentInput === this.password) {
+                    this.showSuccess();
+                } else {
+                    this.showError();
+                }
+            }
+
+            showSuccess() {
+                // Анимация успеха
+                document.querySelectorAll('.login-field').forEach(field => {
+                    field.classList.add('filled');
+                });
+
+                setTimeout(() => {
+                    this.authenticate();
+                }, 800);
+            }
+
+            showError() {
+                // Анимация ошибки
+                document.querySelectorAll('.login-field').forEach(field => {
+                    field.classList.add('error');
+                });
+
+                setTimeout(() => {
+                    this.clearError();
+                }, 2000);
+            }
+
+            clearError() {
+                document.querySelectorAll('.login-field').forEach(field => {
+                    field.classList.remove('error');
+                });
+            }
+
+            authenticate() {
+                // Сохраняем состояние авторизации
+                localStorage.setItem('isAuthenticated', 'true');
+                localStorage.setItem('authTimestamp', Date.now().toString());
+
+                // Перенаправляем на главную страницу
+                this.redirectToMain();
+            }
+
+            updateDisplay() {
+                // Обновляем поля ввода
+                const fields = document.querySelectorAll('.login-field');
+                fields.forEach((field, index) => {
+                    const digit = this.currentInput[index] || '';
+                    field.textContent = digit;
+                    
+                    if (digit) {
+                        field.classList.add('filled');
+                    } else {
+                        field.classList.remove('filled');
+                    }
+                });
+
+                // Обновляем точки
+                const dots = document.querySelectorAll('.login-dot');
+                dots.forEach((dot, index) => {
+                    if (index < this.currentInput.length) {
+                        dot.classList.add('filled');
+                    } else {
+                        dot.classList.remove('filled');
+                    }
+                });
+            }
+
+            focusCurrentField() {
+                // Убираем фокус со всех полей
+                document.querySelectorAll('.login-field').forEach(field => {
+                    field.classList.remove('focus');
+                });
+
+                // Устанавливаем фокус на текущее поле
+                if (this.currentIndex < this.maxLength) {
+                    const currentField = document.querySelector(`[data-index="${this.currentIndex}"]`);
+                    if (currentField) {
+                        currentField.classList.add('focus');
+                    }
+                }
+            }
+
+            handleKeydown(e) {
+                switch (e.key) {
+                    case 'Enter':
+                        e.preventDefault();
+                        this.checkPassword();
+                        break;
+                    case 'Escape':
+                        e.preventDefault();
+                        this.clearAll();
+                        break;
+                    case 'Backspace':
+                        e.preventDefault();
+                        this.removeDigit();
+                        break;
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        if (this.currentIndex > 0) {
+                            this.currentIndex--;
+                            this.focusCurrentField();
+                        }
+                        break;
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        if (this.currentIndex < this.maxLength) {
+                            this.currentIndex++;
+                            this.focusCurrentField();
+                        }
+                        break;
+                    default:
+                        if (/^[0-9]$/.test(e.key)) {
+                            e.preventDefault();
+                            this.addDigit(e.key);
+                        }
+                        break;
+                }
+            }
+
+            handlePaste(e) {
+                e.preventDefault();
+                const pastedData = (e.clipboardData || window.clipboardData).getData('text');
+                const numbers = pastedData.replace(/\D/g, '').slice(0, this.maxLength);
+                
+                if (numbers.length === this.maxLength) {
+                    this.currentInput = numbers;
+                    this.currentIndex = this.maxLength;
+                    this.updateDisplay();
+                    this.focusCurrentField();
+                }
+            }
+        }
+
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', () => {
+            new LoginSystem();
+        });
+    </script>
+</body>
+</html> 
