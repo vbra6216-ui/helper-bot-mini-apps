@@ -462,6 +462,9 @@
 
         // Инициализация
         async function init() {
+            // Очищаем старые данные авторизации
+            localStorage.removeItem('adminAuth');
+            
             // Получаем IP адрес
             const ip = await getIPAddress();
             localStorage.setItem('currentIP', ip);

@@ -327,14 +327,39 @@
         }
 
         /* Адаптивность */
+        /* Мега-адаптация под любые размеры устройств */
+        @media (max-width: 1200px) {
+            .error-code {
+                font-size: 12rem;
+            }
+            .title {
+                font-size: 2.5rem;
+            }
+            .subtitle {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .error-code {
+                font-size: 10rem;
+            }
+            .title {
+                font-size: 2.2rem;
+            }
+            .subtitle {
+                font-size: 1.1rem;
+            }
+        }
+
         @media (max-width: 768px) {
             .error-code {
-                font-size: 6rem;
+                font-size: 8rem;
                 margin-bottom: 15px;
             }
             
             .title {
-                font-size: 1.5rem;
+                font-size: 1.8rem;
                 margin-bottom: 15px;
                 padding: 0 20px;
             }
@@ -402,19 +427,23 @@
             }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 576px) {
             .error-code {
-                font-size: 5rem;
+                font-size: 6rem;
+                margin-bottom: 10px;
             }
             
             .title {
-                font-size: 1.3rem;
+                font-size: 1.5rem;
+                margin-bottom: 10px;
                 padding: 0 15px;
             }
             
             .subtitle {
                 font-size: 0.9rem;
+                margin-bottom: 25px;
                 padding: 0 20px;
+                line-height: 1.3;
             }
             
             .btn {
@@ -425,11 +454,188 @@
 
             .container {
                 padding: 15px;
-                margin: 15px;
+                margin: 10px;
+                max-width: 95%;
             }
 
             .lock-icon {
                 font-size: 40px;
+                margin-bottom: 15px;
+            }
+
+            .forbidden-access-effect {
+                top: 5px;
+                right: 5px;
+                font-size: 1.2rem;
+            }
+
+            .block-effect {
+                width: 80px;
+                height: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .error-code {
+                font-size: 5rem;
+            }
+            
+            .title {
+                font-size: 1.3rem;
+                padding: 0 10px;
+            }
+            
+            .subtitle {
+                font-size: 0.85rem;
+                padding: 0 15px;
+            }
+            
+            .btn {
+                max-width: 220px;
+                padding: 8px 14px;
+                font-size: 0.85rem;
+            }
+
+            .container {
+                padding: 10px;
+                margin: 5px;
+            }
+
+            .lock-icon {
+                font-size: 35px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .error-code {
+                font-size: 4rem;
+            }
+            
+            .title {
+                font-size: 1.1rem;
+                padding: 0 8px;
+            }
+            
+            .subtitle {
+                font-size: 0.8rem;
+                padding: 0 12px;
+            }
+            
+            .btn {
+                max-width: 200px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            .container {
+                padding: 8px;
+                margin: 3px;
+            }
+
+            .lock-icon {
+                font-size: 30px;
+            }
+        }
+
+        /* Адаптация для очень маленьких экранов */
+        @media (max-width: 320px) {
+            .error-code {
+                font-size: 3.5rem;
+            }
+            
+            .title {
+                font-size: 1rem;
+                padding: 0 5px;
+            }
+            
+            .subtitle {
+                font-size: 0.75rem;
+                padding: 0 10px;
+            }
+            
+            .btn {
+                max-width: 180px;
+                padding: 5px 10px;
+                font-size: 0.75rem;
+            }
+
+            .container {
+                padding: 5px;
+                margin: 2px;
+            }
+
+            .lock-icon {
+                font-size: 25px;
+            }
+        }
+
+        /* Адаптация для ландшафтной ориентации на мобильных */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .error-code {
+                font-size: 4rem;
+                margin-bottom: 10px;
+            }
+            
+            .title {
+                font-size: 1.2rem;
+                margin-bottom: 8px;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 15px;
+            }
+            
+            .lock-icon {
+                font-size: 30px;
+                margin-bottom: 10px;
+            }
+
+            .container {
+                padding: 10px;
+                margin: 10px;
+            }
+        }
+
+        /* Адаптация для планшетов */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .error-code {
+                font-size: 9rem;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .btn {
+                max-width: 300px;
+                padding: 15px 25px;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Адаптация для больших экранов */
+        @media (min-width: 1200px) {
+            .error-code {
+                font-size: 18rem;
+            }
+            
+            .title {
+                font-size: 3.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .btn {
+                max-width: 400px;
+                padding: 20px 35px;
+                font-size: 1.3rem;
             }
         }
 
@@ -597,6 +803,75 @@
                     errorCode.classList.remove('forbidden-shake');
                 }, 500);
             }, 4000);
+
+            // Автоматическая адаптация под размер экрана
+            function adaptToScreen() {
+                const width = window.innerWidth;
+                const height = window.innerHeight;
+                const container = document.querySelector('.container');
+                const errorCode = document.querySelector('.error-code');
+                const title = document.querySelector('.title');
+                const subtitle = document.querySelector('.subtitle');
+                const btn = document.querySelector('.btn');
+
+                // Динамическая адаптация размеров
+                if (width < 320) {
+                    // Очень маленькие экраны
+                    errorCode.style.fontSize = '3rem';
+                    title.style.fontSize = '0.9rem';
+                    subtitle.style.fontSize = '0.7rem';
+                    btn.style.fontSize = '0.7rem';
+                    btn.style.padding = '4px 8px';
+                } else if (width < 480) {
+                    // Маленькие экраны
+                    errorCode.style.fontSize = '4rem';
+                    title.style.fontSize = '1.1rem';
+                    subtitle.style.fontSize = '0.8rem';
+                    btn.style.fontSize = '0.8rem';
+                    btn.style.padding = '6px 12px';
+                } else if (width < 768) {
+                    // Средние экраны
+                    errorCode.style.fontSize = '6rem';
+                    title.style.fontSize = '1.5rem';
+                    subtitle.style.fontSize = '1rem';
+                    btn.style.fontSize = '1rem';
+                    btn.style.padding = '10px 20px';
+                } else if (width < 1024) {
+                    // Планшеты
+                    errorCode.style.fontSize = '8rem';
+                    title.style.fontSize = '2rem';
+                    subtitle.style.fontSize = '1.2rem';
+                    btn.style.fontSize = '1.1rem';
+                    btn.style.padding = '12px 24px';
+                } else {
+                    // Большие экраны
+                    errorCode.style.fontSize = '12rem';
+                    title.style.fontSize = '2.5rem';
+                    subtitle.style.fontSize = '1.4rem';
+                    btn.style.fontSize = '1.3rem';
+                    btn.style.padding = '15px 30px';
+                }
+
+                // Адаптация под высоту экрана
+                if (height < 500) {
+                    container.style.padding = '10px';
+                    errorCode.style.marginBottom = '10px';
+                    title.style.marginBottom = '8px';
+                    subtitle.style.marginBottom = '15px';
+                } else {
+                    container.style.padding = '20px';
+                    errorCode.style.marginBottom = '20px';
+                    title.style.marginBottom = '15px';
+                    subtitle.style.marginBottom = '30px';
+                }
+            }
+
+            // Запускаем адаптацию при загрузке
+            adaptToScreen();
+
+            // Адаптируемся при изменении размера окна
+            window.addEventListener('resize', adaptToScreen);
+            window.addEventListener('orientationchange', adaptToScreen);
         });
     </script>
 </body>
