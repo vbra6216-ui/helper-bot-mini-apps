@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест темной системы входа</title>
+    <link rel="stylesheet" href="login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            background: #0f0f23;
+            color: white;
+        }
+        
+        .test-info {
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .test-info h1 {
+            color: #ffffff;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .test-info p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 12px;
+        }
+        
+        .test-info code {
+            background: rgba(102, 126, 234, 0.2);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-family: monospace;
+            color: #667eea;
+        }
+        
+        .test-info ul {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+        
+        .test-info li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-info">
+        <h1>🔒 Тест темной системы входа</h1>
+        <p><strong>Пароль для входа:</strong> <code>407264</code></p>
+        <p><strong>Особенности дизайна:</strong></p>
+        <ul>
+            <li>🌙 <strong>Темная тема</strong> с градиентным фоном</li>
+            <li>✨ <strong>Плавные анимации</strong> и эффекты</li>
+            <li>🎨 <strong>Современный UI</strong> с размытием</li>
+            <li>📱 <strong>Полная адаптивность</strong> для мобильных</li>
+            <li>🔢 <strong>Цифровая клавиатура</strong> 0-9</li>
+            <li>⚡ <strong>Автоматический переход</strong> между полями</li>
+            <li>💾 <strong>Сохранение авторизации</strong> (24 часа)</li>
+        </ul>
+    </div>
+
+    <!-- 🔒 Темная система входа -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-container">
+            <!-- Заголовок -->
+            <div class="login-header">
+                <div class="login-icon">🔒</div>
+                <h1 class="login-title">Helper Bot</h1>
+                <p class="login-subtitle">Введите пароль для доступа</p>
+            </div>
+
+            <!-- Поля для ввода пароля -->
+            <div class="login-fields" id="loginFields">
+                <div class="login-field" data-index="0"></div>
+                <div class="login-field" data-index="1"></div>
+                <div class="login-field" data-index="2"></div>
+                <div class="login-field" data-index="3"></div>
+                <div class="login-field" data-index="4"></div>
+                <div class="login-field" data-index="5"></div>
+            </div>
+
+            <!-- Точки индикации -->
+            <div class="login-dots" id="loginDots">
+                <div class="login-dot" data-index="0"></div>
+                <div class="login-dot" data-index="1"></div>
+                <div class="login-dot" data-index="2"></div>
+                <div class="login-dot" data-index="3"></div>
+                <div class="login-dot" data-index="4"></div>
+                <div class="login-dot" data-index="5"></div>
+            </div>
+
+            <!-- Кнопки действий -->
+            <div class="login-actions">
+                <button class="login-btn clear" id="clearBtn">Очистить</button>
+                <button class="login-btn enter" id="enterBtn">Войти</button>
+            </div>
+
+            <!-- Цифровая клавиатура -->
+            <div class="login-keypad" id="loginKeypad">
+                <button class="login-key" data-digit="1">1</button>
+                <button class="login-key" data-digit="2">2</button>
+                <button class="login-key" data-digit="3">3</button>
+                <button class="login-key" data-digit="4">4</button>
+                <button class="login-key" data-digit="5">5</button>
+                <button class="login-key" data-digit="6">6</button>
+                <button class="login-key" data-digit="7">7</button>
+                <button class="login-key" data-digit="8">8</button>
+                <button class="login-key" data-digit="9">9</button>
+                <button class="login-key zero" data-digit="0">0</button>
+                <button class="login-key backspace" id="backspaceBtn">⌫</button>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- Основной контент (скрыт до авторизации) -->
+    <div class="main-content hidden" id="mainContent">
+        <div style="background: rgba(15, 15, 35, 0.8); backdrop-filter: blur(20px); padding: 40px; border-radius: 16px; text-align: center; box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.1);">
+            <h1 style="color: #ffffff; margin-bottom: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">🎉 Добро пожаловать!</h1>
+            <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 30px; font-size: 18px;">Вы успешно вошли в систему.</p>
+            <button onclick="logout()" style="padding: 12px 24px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 16px; font-weight: 600; transition: all 0.3s ease;">Выйти</button>
+        </div>
+    </div>
+
+    <script src="login-system.js"></script>
+</body>
+</html> 
