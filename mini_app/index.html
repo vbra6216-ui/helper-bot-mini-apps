@@ -2,22 +2,56 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Helper Bot">
-    <meta name="theme-color" content="#667eea">
-    <meta name="msapplication-TileColor" content="#667eea">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Helper Bot</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="mobile-optimization.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
-
+    <script>
+        // Проверка на мобильное устройство
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                   window.innerWidth <= 768;
+        }
+        // Перенаправление на 404.html для мобильных устройств
+        if (isMobileDevice()) {
+            window.location.href = '404.html';
+        }
+        // Показать уведомление, если был вход с мобильного после авторизации
+        if (localStorage.getItem('showSuspiciousNotice')) {
+            window.addEventListener('DOMContentLoaded', function() {
+                const notice = document.createElement('div');
+                notice.textContent = 'Подозрительно...';
+                notice.style.cssText = `
+                    position: fixed;
+                    top: 30px;
+                    right: 30px;
+                    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+                    color: #fff;
+                    padding: 22px 38px;
+                    border-radius: 18px;
+                    font-size: 1.3em;
+                    font-weight: 700;
+                    box-shadow: 0 8px 32px rgba(220,53,69,0.25);
+                    z-index: 9999;
+                    opacity: 0;
+                    transform: translateY(-20px) scale(0.95);
+                    transition: all 0.5s cubic-bezier(.4,2,.3,1);
+                `;
+                document.body.appendChild(notice);
+                setTimeout(() => {
+                    notice.style.opacity = '1';
+                    notice.style.transform = 'translateY(0) scale(1)';
+                }, 100);
+                setTimeout(() => {
+                    notice.style.opacity = '0';
+                    notice.style.transform = 'translateY(-20px) scale(0.95)';
+                    setTimeout(() => notice.remove(), 600);
+                }, 3500);
+                localStorage.removeItem('showSuspiciousNotice');
+            });
+        }
+    </script>
     <style>
         .profile-section {
             background: linear-gradient(135deg, #7B61FF 0%, #9B7DFF 100%);
@@ -199,9 +233,7 @@
     </style>
 </head>
 <body>
-
-
-    <div class="app-container" id="mainApp">
+    <div class="app-container">
         <!-- Header -->
         <header class="header">
             <div class="header-content">
@@ -210,11 +242,6 @@
                     <p class="subtitle">Поиск команд и справочников</p>
                 </div>
                 <div class="header-actions">
-                    <button class="btn-icon" id="logoutBtn" title="Выйти" style="display: none;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
                     <button class="btn-icon" id="burgerMenuBtn" title="Меню">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M3 12H21M3 6H21M3 18H21" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -231,7 +258,7 @@
         </header>
 
         <!-- Burger Menu Dropdown -->
-        <div class="burger-menu" id="burgerMenu">
+        <div class="burger-menu" id="burgerMenu" style="display: none;">
             <div class="burger-menu-content">
                 <div class="burger-menu-header">
                     <h3>Меню</h3>
@@ -239,42 +266,42 @@
                 </div>
                 <div class="burger-menu-items">
                     <a href="categories.html" class="burger-menu-item">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="3" y="5" width="18" height="14" rx="2" stroke="#7B61FF" stroke-width="2"/>
                             <path d="M3 8H21" stroke="#7B61FF" stroke-width="2"/>
                         </svg>
                         <span>Категории</span>
                     </a>
                     <a href="all_commands.html" class="burger-menu-item">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="#7B61FF" stroke-width="2"/>
                             <path d="M14 2V8H20" stroke="#7B61FF" stroke-width="2"/>
                         </svg>
                         <span>Все команды</span>
                     </a>
                     <a href="gps.html" class="burger-menu-item">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2Z" stroke="#7B61FF" stroke-width="2"/>
                             <circle cx="12" cy="9" r="2.5" stroke="#7B61FF" stroke-width="2"/>
                         </svg>
                         <span>GPS</span>
                     </a>
                     <a href="rp.html" class="burger-menu-item">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="#7B61FF" stroke-width="2"/>
                             <path d="M14 2V8H20" stroke="#7B61FF" stroke-width="2"/>
                         </svg>
                         <span>RP-термины</span>
                     </a>
                     <a href="helper_duties.html" class="burger-menu-item">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M9 12L11 14L15 10" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#7B61FF" stroke-width="2"/>
                         </svg>
                         <span>Обязанности</span>
                     </a>
                     <a href="chat_rules.html" class="burger-menu-item">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M18 8L22 12L18 16" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M6 8L2 12L6 16" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M14 4L10 20" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -282,10 +309,25 @@
                         <span>Правила чата</span>
                     </a>
                     <a href="mute_rules.html" class="burger-menu-item">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 2L13.09 8.26L20 9L14 14.14L15.18 21.02L12 17.77L8.82 21.02L10 14.14L4 9L10.91 8.26L12 2Z" stroke="#7B61FF" stroke-width="2"/>
                         </svg>
                         <span>Правила мута</span>
+                    </a>
+                    <a href="ap_rules.html" class="burger-menu-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12L11 14L15 10" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#7B61FF" stroke-width="2"/>
+                        </svg>
+                        <span>Правила АП</span>
+                    </a>
+                    <a href="jobs.html" class="burger-menu-item">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="7" width="18" height="12" rx="2" stroke="#7B61FF" stroke-width="2"/>
+                            <path d="M16 7V5C16 3.89543 15.1046 3 14 3H10C8.89543 3 8 3.89543 8 5V7" stroke="#7B61FF" stroke-width="2"/>
+                            <path d="M9 13H15" stroke="#7B61FF" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <span>Работы</span>
                     </a>
                 </div>
             </div>
@@ -385,6 +427,28 @@
                         </div>
                         <div class="action-text">Правила чата</div>
                         <div class="action-desc">Поведение в чате</div>
+                    </a>
+                    
+                    <a href="ap_rules.html" class="action-card">
+                        <div class="action-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 12L11 14L15 10" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="#7B61FF" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="action-text">Правила АП</div>
+                        <div class="action-desc">Агента Поддержки</div>
+                    </a>
+                    <a href="jobs.html" class="action-card">
+                        <div class="action-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="3" y="7" width="18" height="12" rx="2" stroke="#7B61FF" stroke-width="2"/>
+                                <path d="M16 7V5C16 3.89543 15.1046 3 14 3H10C8.89543 3 8 3.89543 8 5V7" stroke="#7B61FF" stroke-width="2"/>
+                                <path d="M9 13H15" stroke="#7B61FF" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="action-text">Работы</div>
+                        <div class="action-desc">Список профессий</div>
                     </a>
                 </div>
             </section>
@@ -581,16 +645,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Кнопка выхода -->
-                    <div class="profile-actions">
-                        <button class="logout-btn" onclick="logout()" title="Выйти из системы">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Выйти
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -602,59 +656,6 @@
         <div class="loading-text">Загрузка...</div>
     </div>
 
-    <script>
-        // Проверка авторизации при загрузке
-        function checkAuth() {
-            const isAuthenticated = localStorage.getItem('isAuthenticated');
-            const authTimestamp = localStorage.getItem('authTimestamp');
-            
-            if (isAuthenticated && authTimestamp) {
-                const now = Date.now();
-                const authTime = parseInt(authTimestamp);
-                const hoursSinceAuth = (now - authTime) / (1000 * 60 * 60);
-                
-                // Авторизация действительна 24 часа
-                if (hoursSinceAuth < 24) {
-                    return true;
-                } else {
-                    // Очищаем устаревшую авторизацию
-                    localStorage.removeItem('isAuthenticated');
-                    localStorage.removeItem('authTimestamp');
-                }
-            }
-            
-            return false;
-        }
-
-        // Проверяем авторизацию при каждой загрузке страницы
-        document.addEventListener('DOMContentLoaded', function() {
-            if (!checkAuth()) {
-                window.location.href = 'login.html';
-            }
-        });
-
-        // Проверяем авторизацию при фокусе на окне (возвращение на вкладку)
-        window.addEventListener('focus', function() {
-            if (!checkAuth()) {
-                window.location.href = 'login.html';
-            }
-        });
-
-        // Проверяем авторизацию при видимости страницы
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden && !checkAuth()) {
-                window.location.href = 'login.html';
-            }
-        });
-
-        // Функция выхода
-        function logout() {
-            localStorage.removeItem('isAuthenticated');
-            localStorage.removeItem('authTimestamp');
-            window.location.href = 'login.html';
-        }
-    </script>
-    <script src="performance-optimization.js"></script>
     <script src="app.js"></script>
 </body>
 </html> 

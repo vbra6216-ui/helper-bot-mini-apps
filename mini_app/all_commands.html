@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Все команды - Helper Bot</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        // Проверка на мобильное устройство
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                   window.innerWidth <= 768;
+        }
+        
+        // Перенаправление на 404.html для мобильных устройств
+        if (isMobileDevice()) {
+            window.location.href = '404.html';
+        }
+    </script>
 </head>
 <body>
     <div class="app-container">
@@ -67,7 +79,7 @@
                         <h4 class="command-category-title">${category}</h4>
                         <div class="commands-grid">
                             ${categoryCommands.map(cmd => `
-                                <div class="command-item">
+                                <div class="command-item" data-command="${cmd.command.replace(/"/g, '&quot;')}">
                                     <div class="command-name">${cmd.command}</div>
                                     <div class="command-desc">${cmd.description}</div>
                                 </div>
@@ -78,6 +90,13 @@
                 
                 commandsList.innerHTML = html;
                 
+                // Добавляем обработчики копирования на всю карточку
+                commandsList.querySelectorAll('.command-item').forEach(el => {
+                    el.addEventListener('click', function() {
+                        copyCommandToClipboard(this.dataset.command);
+                    });
+                });
+                
             } catch (error) {
                 console.error('Ошибка загрузки команд:', error);
                 document.getElementById('allCommandsList').innerHTML = 
@@ -85,6 +104,44 @@
             }
         }
 
+        // Функция копирования
+        function copyCommandToClipboard(command) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(command).then(() => {
+                    showCommandNotification('Команда скопирована!');
+                }).catch(() => {
+                    fallbackCopyCommand(command);
+                });
+            } else {
+                fallbackCopyCommand(command);
+            }
+        }
+        function fallbackCopyCommand(command) {
+            const textArea = document.createElement('textarea');
+            textArea.value = command;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showCommandNotification('Команда скопирована!');
+            } catch (err) {
+                showCommandNotification('Ошибка копирования');
+            }
+            document.body.removeChild(textArea);
+        }
+        function showCommandNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed; top: 20px; right: 20px; background: #7B61FF; color: #fff;
+                padding: 12px 20px; border-radius: 8px; z-index: 1000; font-weight: 500;
+                box-shadow: 0 4px 16px rgba(123, 97, 255, 0.3);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        }
         // Загружаем команды при загрузке страницы
         document.addEventListener('DOMContentLoaded', loadAllCommands);
     </script>

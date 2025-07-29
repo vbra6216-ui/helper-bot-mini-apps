@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Регламент мута | Helper Bot</title>
     <link rel="stylesheet" href="styles.css">
+    <script>
+        // Проверка на мобильное устройство
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                   window.innerWidth <= 768;
+        }
+        
+        // Перенаправление на 404.html для мобильных устройств
+        if (isMobileDevice()) {
+            window.location.href = '404.html';
+        }
+    </script>
     <style>
         body { background: linear-gradient(135deg, #181a32 0%, #23244a 100%); color: #fff; font-family: 'Inter', sans-serif; }
         .container { max-width: 950px; margin: 48px auto 40px auto; padding: 36px 32px 32px 32px; background: #20224a; border-radius: 22px; box-shadow: 0 8px 32px #0003, 0 1.5px 0 #7B61FF22 inset; }

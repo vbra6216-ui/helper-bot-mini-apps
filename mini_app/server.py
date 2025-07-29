@@ -80,12 +80,7 @@ def get_commands():
     try:
         with open('commands.json', 'r', encoding='utf-8') as f:
             commands = json.load(f)
-        
-        # Оптимизация для мобильных устройств
-        response = jsonify(commands)
-        response.headers['Cache-Control'] = 'public, max-age=3600'  # Кэширование на 1 час
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        return response
+        return jsonify(commands)
     except FileNotFoundError:
         return jsonify({'error': 'Commands file not found'}), 404
 
@@ -94,12 +89,7 @@ def get_gps():
     try:
         with open('gps.json', 'r', encoding='utf-8') as f:
             gps_data = json.load(f)
-        
-        # Оптимизация для мобильных устройств
-        response = jsonify(gps_data)
-        response.headers['Cache-Control'] = 'public, max-age=3600'
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        return response
+        return jsonify(gps_data)
     except FileNotFoundError:
         return jsonify({'error': 'GPS file not found'}), 404
 
@@ -108,12 +98,7 @@ def get_rp_terms():
     try:
         with open('rp_terms.json', 'r', encoding='utf-8') as f:
             rp_terms = json.load(f)
-        
-        # Оптимизация для мобильных устройств
-        response = jsonify(rp_terms)
-        response.headers['Cache-Control'] = 'public, max-age=3600'
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        return response
+        return jsonify(rp_terms)
     except FileNotFoundError:
         return jsonify({'error': 'RP terms file not found'}), 404
 

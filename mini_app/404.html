@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Страница не найдена</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: #ffffff;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 600px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .error-code {
+            font-size: 15rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #dc3545, #c82333, #ff4757);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 50px rgba(220, 53, 69, 0.5);
+            animation: forbiddenGlow 3s ease-in-out infinite alternate;
+            margin-bottom: 20px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .error-code:hover {
+            animation: forbiddenShake 0.4s ease-in-out;
+        }
+
+        @keyframes forbiddenGlow {
+            from { filter: drop-shadow(0 0 20px rgba(220, 53, 69, 0.3)); }
+            to { filter: drop-shadow(0 0 40px rgba(220, 53, 69, 0.8)); }
+        }
+
+        .error-code::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(220, 53, 69, 0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            animation: forbiddenPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes forbiddenPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.6; }
+        }
+
+        .lock-icon {
+            font-size: 80px;
+            color: #dc3545;
+            margin-bottom: 30px;
+            animation: lockBounce 2s ease-in-out infinite;
+            text-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        @keyframes lockBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 20px;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            animation: slideIn 1s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #cccccc;
+            margin-bottom: 40px;
+            line-height: 1.6;
+            animation: slideIn 1s ease-out 0.2s both;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideIn 1s ease-out 0.4s both;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4a4a4a 0%, #2d2d2d 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            background: linear-gradient(135deg, #5a5a5a 0%, #3d3d3d 100%);
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #ec4555 0%, #d83343 100%);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #7c858d 0%, #596067 100%);
+        }
+
+        /* Анимированные частицы запрета */
+        .forbidden-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .forbidden-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(220, 53, 69, 0.8);
+            border-radius: 50%;
+            animation: forbiddenFloat 8s ease-in-out infinite;
+        }
+
+        .forbidden-particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .forbidden-particle:nth-child(2) { left: 20%; animation-delay: 1s; }
+        .forbidden-particle:nth-child(3) { left: 30%; animation-delay: 2s; }
+        .forbidden-particle:nth-child(4) { left: 40%; animation-delay: 3s; }
+        .forbidden-particle:nth-child(5) { left: 50%; animation-delay: 4s; }
+        .forbidden-particle:nth-child(6) { left: 60%; animation-delay: 5s; }
+        .forbidden-particle:nth-child(7) { left: 70%; animation-delay: 6s; }
+        .forbidden-particle:nth-child(8) { left: 80%; animation-delay: 7s; }
+        .forbidden-particle:nth-child(9) { left: 90%; animation-delay: 8s; }
+        .forbidden-particle:nth-child(10) { left: 15%; animation-delay: 2.5s; }
+        .forbidden-particle:nth-child(11) { left: 25%; animation-delay: 3.5s; }
+        .forbidden-particle:nth-child(12) { left: 35%; animation-delay: 4.5s; }
+        .forbidden-particle:nth-child(13) { left: 45%; animation-delay: 5.5s; }
+        .forbidden-particle:nth-child(14) { left: 55%; animation-delay: 6.5s; }
+        .forbidden-particle:nth-child(15) { left: 65%; animation-delay: 7.5s; }
+
+        @keyframes forbiddenFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Геометрические фигуры запрета */
+        .forbidden-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .forbidden-shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: forbiddenRotate 25s linear infinite;
+        }
+
+        .forbidden-shape:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            width: 100px;
+            height: 100px;
+            border: 2px solid #dc3545;
+            border-radius: 50%;
+            animation-delay: 0s;
+        }
+
+        .forbidden-shape:nth-child(2) {
+            top: 20%;
+            right: 15%;
+            width: 80px;
+            height: 80px;
+            border: 2px solid #4a4a4a;
+            transform: rotate(45deg);
+            animation-delay: -5s;
+        }
+
+        .forbidden-shape:nth-child(3) {
+            bottom: 30%;
+            left: 20%;
+            width: 120px;
+            height: 120px;
+            border: 2px solid #6c757d;
+            border-radius: 50%;
+            animation-delay: -10s;
+        }
+
+        .forbidden-shape:nth-child(4) {
+            bottom: 20%;
+            right: 25%;
+            width: 60px;
+            height: 60px;
+            border: 2px solid #dc3545;
+            transform: rotate(30deg);
+            animation-delay: -15s;
+        }
+
+        @keyframes forbiddenRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Эффект запрета матрицы */
+        .forbidden-matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent 98%, rgba(220, 53, 69, 0.1) 100%);
+            background-size: 50px 50px;
+            animation: forbiddenMatrix 12s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes forbiddenMatrix {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+
+        /* Эффект блокировки */
+        .block-effect {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 150px;
+            height: 150px;
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+            animation: block 5s ease-in-out infinite;
+        }
+
+        .block-effect::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 3px solid #dc3545;
+            border-radius: 10px;
+            animation: blockPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes block {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.1; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.3; }
+        }
+
+        @keyframes blockPulse {
+            0%, 100% { border-color: #dc3545; }
+            50% { border-color: #ff4757; }
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .error-code {
+                font-size: 6rem;
+                margin-bottom: 15px;
+            }
+            
+            .title {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+                padding: 0 20px;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+                margin-bottom: 30px;
+                padding: 0 30px;
+                line-height: 1.4;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+                padding: 0 20px;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 280px;
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+
+            .container {
+                padding: 20px;
+                margin: 20px;
+                max-width: 90%;
+            }
+
+            .lock-icon {
+                font-size: 50px;
+                margin-bottom: 20px;
+            }
+
+            .forbidden-access-effect {
+                top: 10px;
+                right: 10px;
+                font-size: 1.5rem;
+            }
+
+            .block-effect {
+                width: 100px;
+                height: 100px;
+            }
+
+            .forbidden-shapes .forbidden-shape:nth-child(1) {
+                width: 60px;
+                height: 60px;
+            }
+
+            .forbidden-shapes .forbidden-shape:nth-child(2) {
+                width: 50px;
+                height: 50px;
+            }
+
+            .forbidden-shapes .forbidden-shape:nth-child(3) {
+                width: 80px;
+                height: 80px;
+            }
+
+            .forbidden-shapes .forbidden-shape:nth-child(4) {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .error-code {
+                font-size: 5rem;
+            }
+            
+            .title {
+                font-size: 1.3rem;
+                padding: 0 15px;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+                padding: 0 20px;
+            }
+            
+            .btn {
+                max-width: 250px;
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+
+            .container {
+                padding: 15px;
+                margin: 15px;
+            }
+
+            .lock-icon {
+                font-size: 40px;
+            }
+        }
+
+        /* Эффект печатания запрета */
+        .forbidden-typing {
+            overflow: hidden;
+            border-right: 2px solid #dc3545;
+            white-space: nowrap;
+            animation: forbiddenTyping 3s steps(40, end), forbiddenBlink 0.75s step-end infinite;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        @keyframes forbiddenTyping {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes forbiddenBlink {
+            from, to { border-color: transparent; }
+            50% { border-color: #dc3545; }
+        }
+
+        @media (max-width: 768px) {
+            .forbidden-typing {
+                white-space: normal;
+                animation: none;
+                border-right: none;
+                display: block;
+            }
+        }
+
+        /* Уникальный эффект для 404 - страница не найдена */
+        .forbidden-access-effect {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            color: #dc3545;
+            animation: forbiddenAccess 5s ease-in-out infinite;
+        }
+
+        @keyframes forbiddenAccess {
+            0%, 100% { transform: translateY(0) scale(1); opacity: 0.8; }
+            25% { transform: translateY(-10px) scale(1.1); opacity: 1; }
+            50% { transform: translateY(5px) scale(0.9); opacity: 0.6; }
+            75% { transform: translateY(-5px) scale(1.05); opacity: 1; }
+        }
+
+        /* Эффект вибрации запрета */
+        .forbidden-shake {
+            animation: forbiddenShake 0.5s ease-in-out;
+        }
+
+        @keyframes forbiddenShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Фоновые эффекты запрета -->
+    <div class="forbidden-matrix"></div>
+    
+    <div class="forbidden-shapes">
+        <div class="forbidden-shape"></div>
+        <div class="forbidden-shape"></div>
+        <div class="forbidden-shape"></div>
+        <div class="forbidden-shape"></div>
+    </div>
+
+    <div class="forbidden-particles">
+        <div class="forbidden-particle"></div>
+        <div class="forbidden-particle"></div>
+        <div class="forbidden-particle"></div>
+        <div class="forbidden-particle"></div>
+        <div class="forbidden-particle"></div>
+        <div class="forbidden-particle"></div>
+        <div class="forbidden-particle"></div>
+        <div class="forbidden-particle"></div>
+        <div class="forbidden-particle"></div>
+        <div class="forbidden-particle"></div>
+        <div class="forbidden-particle"></div>
+        <div class="forbidden-particle"></div>
+        <div class="forbidden-particle"></div>
+        <div class="forbidden-particle"></div>
+        <div class="forbidden-particle"></div>
+    </div>
+
+    <div class="container">
+        <div class="forbidden-access-effect">
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="error-code forbidden-shake">404</div>
+        <div class="lock-icon">
+            <i class="fas fa-question-circle"></i>
+        </div>
+        <div class="block-effect"></div>
+        <h1 class="title forbidden-typing">Ведётся бета-тестирование мобильной версии</h1>
+        <p class="subtitle">
+            Мобильная версия приложения временно недоступна.
+        </p>
+        
+        <div class="buttons">
+            <button class="btn btn-primary" onclick="goAuth()">
+                <i class="fas fa-key"></i> Авторизация
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function goAuth() {
+            window.location.href = 'admin_auth.html';
+        }
+
+        // Добавляем эффект при клике на кнопки
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                // Создаем эффект волны
+                const ripple = document.createElement('span');
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255,255,255,0.3)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.left = e.clientX - e.target.offsetLeft + 'px';
+                ripple.style.top = e.clientY - e.target.offsetTop + 'px';
+                ripple.style.width = ripple.style.height = '100px';
+                
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Добавляем CSS для анимации волны
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Случайное движение частиц запрета
+        setInterval(() => {
+            const particles = document.querySelectorAll('.forbidden-particle');
+            particles.forEach(particle => {
+                particle.style.left = Math.random() * 100 + '%';
+            });
+        }, 8000);
+
+        // Эффект вибрации при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            const errorCode = document.querySelector('.error-code');
+            setInterval(() => {
+                errorCode.classList.add('forbidden-shake');
+                setTimeout(() => {
+                    errorCode.classList.remove('forbidden-shake');
+                }, 500);
+            }, 4000);
+        });
+    </script>
+</body>
+</html> 

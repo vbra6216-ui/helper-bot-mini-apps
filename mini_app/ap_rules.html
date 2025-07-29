@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Правила Агента Поддержки - Helper Bot</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="ap-header">
+        <button onclick="history.back()" class="ap-btn-back">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 12H5M12 19L5 12L12 5" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Назад</span>
+        </button>
+        <h1 class="ap-title">Правила Агента Поддержки</h1>
+    </div>
+    <div class="ap-rules-main">
+        <div class="ap-rules-grid">
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">1.1.</span><span class="rule-text">Минимальный онлайн 2 часа в день и 30 ответов.</span></div>
+                <div class="rule-item"><span class="rule-number">1.2.</span><span class="rule-text">Быть вежливым в игре. Игровой помощник должен помнить, что он лицо проекта.</span></div>
+                <div class="rule-item"><span class="rule-number">1.3.</span><span class="rule-text">Внимательно относится к вопросам безопасности своего аккаунта.</span></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">1.4.</span><span class="rule-text">Слушать Главного Следящего и его заместителя.</span></div>
+                <div class="rule-item"><span class="rule-number">1.5.</span><span class="rule-text">Соблюдать все правила сервера, за не соблюдение он может понести наказание вплоть до моментального снятия.</span></div>
+                <div class="rule-item"><span class="rule-number">1.6.</span><span class="rule-text">Минимальный срок игрового помощника – 7 дней, за неустойку минимального срока, игрок получает — warn.</span></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">1.7.</span><span class="rule-text">У агентов поддержки работает система выговоров, которая препятствует переводу на пост мл.модератора сервера.</span></div>
+                <div class="rule-item"><span class="rule-number">1.8.</span><span class="rule-text">Обзвон на пост хелпера проводит красная администрация в лице (Куратор/ЗГА/ГА).</span></div>
+                <div class="rule-item"><span class="rule-number">1.9.</span><span class="rule-text">Минимальный возраст на агенте поддержки — 13 лет. (Если будут сомнения, администрация может запросить доказательства. Док-ва может запросить только (ЗГСХ/ГСХ/ЗГА/ГА)).</span></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">1.10.</span><span class="rule-text">Данные правила могут подвергаться обработке и изменению ответственным лицом сервера/проекта.</span></div>
+                <div class="rule-item"><span class="rule-number">2.1.</span><span class="rule-text">Агент Поддержки обязан ознакомиться с данной темой.</span></div>
+                <div class="rule-item"><span class="rule-number">2.2.</span><span class="rule-text">Агент Поддержки обязан выполнять ежедневную норму.</span></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">2.3.</span><span class="rule-text">Агент Поддержки обязан быть вежливым к игрокам (Даже если была провокация).</span></div>
+                <div class="rule-item"><span class="rule-number">2.4.</span><span class="rule-text">Агент Поддержки обязан давать ответ с большой буквы и ставить точку на конце.</span></div>
+                <div class="rule-item"><span class="rule-number">2.5.</span><span class="rule-text">Агент Поддержки обязан давать верные, понятные и краткие ответы на вопросы.</span></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">2.6.</span><span class="rule-text">Агент Поддержки обязан соблюдать правила проекта.</span><div class="rule-note">Примечание: За нарушение правил сервера, хелпер несет наказание.</div></div>
+                <div class="rule-item"><span class="rule-number">2.7.</span><span class="rule-text">Агент Поддержки обязан знать игровой мод и правила сервера.</span></div>
+                <div class="rule-item"><span class="rule-number">2.8.</span><span class="rule-text">Агент Поддержки обязан выдавать наказание в виде Мута репорта по регламенту наказаний:</span><div class="rule-note">«Ссылка является кликабельно, нажимайте»</div></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">3.1.</span><span class="rule-text">Брать отпуск можно, при согласовании срока с ГСХ или ЗГСХ.</span></div>
+                <div class="rule-item"><span class="rule-number">3.2.</span><span class="rule-text">Иметь имущество на сервере.</span></div>
+                <div class="rule-item"><span class="rule-number">3.3.</span><span class="rule-text">Отвечать на вопросы игроков.</span></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">3.4.</span><span class="rule-text">Участвовать в RolePlay процессе.</span></div>
+                <div class="rule-item"><span class="rule-number">3.5.</span><span class="rule-text">Вступать во фракции и занимать посты лидера/заместителя.</span></div>
+                <div class="rule-item"><span class="rule-number">3.6.</span><span class="rule-text">Игровому помощнику разрешено выдавать мут репорта за оффтоп, неадекватное поведение и т.п.</span></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">3.7.</span><span class="rule-text">Агенту Поддержки разрешено иметь свою семью.</span></div>
+                <div class="rule-item"><span class="rule-number">3.8.</span><span class="rule-text">Агенту Поддержки разрешено менять игровой ник по разрешению Главного Следящего за Хелперами [ГСХ]</span></div>
+                <div class="rule-item"><span class="rule-number">3.9.</span><span class="rule-text">Агенту Поддержки разрешено иметь имущество/бизнесы/машины/квартиры и т.п.</span></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">3.10.</span><span class="rule-text">Агенту Поддержки разрешено отвечать на вопросы игроков и помогать своим коллегам в ответе на вопросы от игроков.</span></div>
+                <div class="rule-item"><span class="rule-number">3.11.</span><span class="rule-text">Агенту Поддержки разрешено стоять на посту больше обычного срока [По обоюдному согласию с ГСХ].</span></div>
+                <div class="rule-item"><span class="rule-number">3.12.</span><span class="rule-text">Агент поддержки может не переводиться на пост Администрации сервера, а просто стоять и помогать игрокам.</span></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">3.13.</span><span class="rule-text">Агент Поддержки может перенаправить игрока в /report-1, если игрок просит помощи.</span></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">4.1.</span><span class="rule-text">Запрещено нарушать правила сервера.</span><div class="rule-punishment">|| Выговор/ Снятие с поста</div></div>
+                <div class="rule-item"><span class="rule-number">4.2.</span><span class="rule-text">Запрещено давать ложный/ некорректные ответ игроку.</span><div class="rule-punishment">|| Выговор/ Снятие с поста</div></div>
+                <div class="rule-item"><span class="rule-number">4.3.</span><span class="rule-text">Запрещено играть на твинке.</span><div class="rule-punishment">|| Снятие с поста</div></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">4.4.</span><span class="rule-text">Запрещено сливать информацию хелперов.</span><div class="rule-punishment">|| Снятие с поста</div></div>
+                <div class="rule-item"><span class="rule-number">4.5.</span><span class="rule-text">Запрещена спешка, помарки/ошибки, проявление неграмотности, неполноценные ответы. Перед тем, как дать ответ игроку, еще раз прочитайте и проверьте правильность ответа.</span><div class="rule-punishment">|| Беседа/Устный выговор/Выговор</div><div class="rule-note">Примечание: Требуется давать ответ развернутым, грамотным, с пунктуацией, с заглавной буквы не забыв точку. Главная задача дать верный и понятный ответ.</div></div>
+                <div class="rule-item"><span class="rule-number">4.6.</span><span class="rule-text">Запрещено давать не развернутые ответы на вопросы. По типу: « На Ц/Р увидите цены», « Узнайте сами», « РП Путем» и т.п. Игрок должен получать чёткий ответ в максимально понятной и в развернутой форме.</span><div class="rule-punishment">|| Выговор/ Снятие с поста</div></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">4.7.</span><span class="rule-text">Выпрашивать повышения/перевод в состав администратора. Руководящая Администрация сама вам отпишет в личные сообщения.</span><div class="rule-punishment">|| Выговор/ Снятие с поста / Блокировка личных сообщений</div><div class="rule-note">Примечание: Чтобы не попасть в заблуждение/обман. В чате хелперов «Общение» имеется команда «/nlist», она доступна администрации следящей за хелперами. Вы имеете право попроси ее прописать, дабы убедиться, что вам пишет не фейк ЗГА/ГА сервера.</div></div>
+                <div class="rule-item"><span class="rule-number">4.8.</span><span class="rule-text">Запрещено флудить в чат хелперов в самой игре.</span><div class="rule-punishment">|| Выговор/ Снятие с поста</div></div>
+                <div class="rule-item"><span class="rule-number">4.9.</span><span class="rule-text">Запрещено нарушение правил чатов хелперов в ВКонтакте.</span><div class="rule-punishment">|| Выговор/ Снятие с поста</div></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">4.10.</span><span class="rule-text">Запрещены какие-либо конфликты между своими коллегами.</span><div class="rule-punishment">|| Выговор/ Снятие с поста</div><div class="rule-note">Примечание: Наказание получают обе из сторон.</div></div>
+                <div class="rule-item"><span class="rule-number">4.11.</span><span class="rule-text">Запрещено какое-либо неадекватное поведение в чью-либо сторону.</span><div class="rule-punishment">|| Выговор/ Снятие с поста</div></div>
+                <div class="rule-item"><span class="rule-number">4.12.</span><span class="rule-text">Запрещено переводить вопросы, которые касаются игрового процесса «/report >1».</span><div class="rule-punishment">|| Выговор</div><div class="rule-note">Примечание: Если жалоба на игрока/ вопрос который адресован каком-либо администратору и вы помочь не можете физически, то вы переводите в «/report > 1».</div></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">4.13.</span><span class="rule-text">Запрещено игнорировать /ask.</span><div class="rule-punishment">|| Беседа/ Устный выговор/ Выговор</div></div>
+                <div class="rule-item"><span class="rule-number">4.14.</span><span class="rule-text">Запрещено менять свой Nick_Name без разрешения ГСХ.</span><div class="rule-punishment">|| Снятие с поста</div></div>
+                <div class="rule-item"><span class="rule-number">4.15.</span><span class="rule-text">Запрещены любые способы фарма нормы/ АСКов в игре. В любом его проявлении.</span><div class="rule-punishment">|| Вплоть до снятия с поста</div></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">4.16.</span><span class="rule-text">Запрещено использовать /ans в личных целях (общаться с игроками, мешая другим саппортам).</span><div class="rule-punishment">|| Выговор/ Снятие с поста</div></div>
+                <div class="rule-item"><span class="rule-number">4.17.</span><span class="rule-text">Запрещено просить задавать вопросы в /ask во всех чатах, особенно это касается общих (вип, фракционный, семейный), это приравнивается к фарму нормы/ ответов. За это идет моментальное снятие с поста.</span><div class="rule-punishment">|| Снятие с поста</div></div>
+                <div class="rule-item"><span class="rule-number">4.18.</span><span class="rule-text">Запрещено отвечать на поставленные вопросы транслитом (русский текст английскими буквами)</span><div class="rule-punishment">|| Выговор/ Снятие с поста</div></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">4.19.</span><span class="rule-text">Запрещено оскорблять игроков и администраторов проекта, использовать нецензурную лексику</span><div class="rule-punishment">|| Снятие с поста</div></div>
+                <div class="rule-item"><span class="rule-number">4.20.</span><span class="rule-text">Запрещено нарушать правила форума, в том числе комментировать жалобы на форуме (Ответы на собственные жалобы допустимы исключительно без оффтопа и должны содержать подробные объяснения и доказательства.)</span><div class="rule-punishment">|| Выговор/ Снятие с поста</div></div>
+                <div class="rule-item"><span class="rule-number">4.21.</span><span class="rule-text">Игровым помощникам запрещено занимать какие-либо посты на других проектах</span><div class="rule-punishment">|| Снятие с поста</div></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">4.22.</span><span class="rule-text">Запрещено писать в репорт вопросы или оффтоп, если хотите что-то спросить, стоит задать вопрос в чат хелперов</span></div>
+                <div class="rule-item"><span class="rule-number">4.23.</span><span class="rule-text">Запрещено просить у администрации телепортировать себя куда вам нужно. Максимум, можно попросить ГСХ/ЗГСХ/СХ телепортировать вас в тихое место (к примеру: в виртуальный мир).</span><div class="rule-punishment">|| Выговор/ Снятие с поста</div></div>
+                <div class="rule-item"><span class="rule-number">4.24.</span><span class="rule-text">Агентам поддержки строго запрещено использовать автокликеры для фарма АСКов. (Использование автокликера разрешено исключительно в период с 00:00 до 08:00.)</span><div class="rule-punishment">|| Выговор</div></div>
+            </div>
+            <div class="rule-row">
+                <div class="rule-item"><span class="rule-number">4.25.</span><span class="rule-text">Агентам поддержки строго запрещено находиться в AFK более 5 минут. AFK без ESC — не более 30 секунд.</span><div class="rule-punishment">|| Выговор</div></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html> 

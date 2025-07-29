@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Работы - Helper Bot</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        // Проверка на мобильное устройство
+        function isMobileDevice() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+                   window.innerWidth <= 768;
+        }
+        
+        // Перенаправление на 404.html для мобильных устройств
+        if (isMobileDevice()) {
+            window.location.href = '404.html';
+        }
+    </script>
+</head>
+<body>
+    <div class="ap-header">
+        <button onclick="history.back()" class="ap-btn-back">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 12H5M12 19L5 12L12 5" stroke="#7B61FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Назад</span>
+        </button>
+        <h1 class="ap-title">Доступные работы</h1>
+    </div>
+    <div class="jobs-table-container">
+        <table class="jobs-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Название</th>
+                    <th>Требование</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1</td><td>Нефтезавод (начальная работа)</td><td>1 уровень</td></tr>
+                <tr><td>2</td><td>Лесопилка (начальная работа)</td><td>1 уровень</td></tr>
+                <tr><td>3</td><td>Мебельный завод (начальная работа)</td><td>1 уровень</td></tr>
+                <tr><td>4</td><td>Угонщик транспортных средств</td><td>1 уровень</td></tr>
+                <tr><td>5</td><td>Водитель автобуса</td><td>2 уровень</td></tr>
+                <tr><td>6</td><td>Доставщик еды</td><td>2 уровень</td></tr>
+                <tr><td>7</td><td>Шахта</td><td>3 уровень</td></tr>
+                <tr><td>8</td><td>Станция механиков</td><td>3 уровень</td></tr>
+                <tr><td>9</td><td>Водитель мусоровоза</td><td>4 уровень</td></tr>
+                <tr><td>10</td><td>Дальнобойщик</td><td>5 уровень</td></tr>
+                <tr><td>11</td><td>Пожарный</td><td>8 уровень</td></tr>
+                <tr><td>12</td><td>Инкассация</td><td>10 уровень</td></tr>
+                <tr><td>13</td><td>Дайвер</td><td>12 уровень</td></tr>
+                <tr><td>14</td><td>Пилот</td><td>15 уровень</td></tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html> 

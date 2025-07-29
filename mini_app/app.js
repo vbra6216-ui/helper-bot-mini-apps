@@ -13,6 +13,29 @@ const appState = {
     tg: null
 };
 
+// Русские соответствия для RP-терминов
+const rpTermsRussian = {
+    'RP': 'РП',
+    'DM': 'ДМ',
+    'DB': 'ДБ',
+    'SK': 'СК',
+    'TK': 'ТК',
+    'PG': 'ПГ',
+    'RK': 'РК',
+    'MG': 'МГ',
+    'BX': 'ВХ',
+    'YK': 'УК',
+    'AK': 'АК',
+    'ZZ': 'ЗЗ',
+    'FR': 'ФР',
+    'FM': 'ФМ',
+    'SH': 'СХ',
+    'FF': 'ФФ',
+    'FearRP': 'СтрахРП',
+    'OOC': 'ООС',
+    'IC': 'ИК'
+};
+
 // Элементы DOM
 const elements = {
     profileBtn: document.getElementById('profileBtn'),
@@ -29,119 +52,95 @@ const elements = {
     commandsUsed: document.getElementById('commandsUsed'),
     lastActive: document.getElementById('lastActive'),
     achievementsGrid: document.getElementById('achievementsGrid'),
-    
+
     burgerMenuBtn: document.getElementById('burgerMenuBtn'),
     burgerMenu: document.getElementById('burgerMenu'),
     closeBurgerMenu: document.getElementById('closeBurgerMenu'),
-    
+
     searchInput: document.getElementById('searchInput'),
     searchBtn: document.getElementById('searchBtn'),
     searchSuggestions: document.getElementById('searchSuggestions'),
-    
+
     resultsSection: document.getElementById('resultsSection'),
     resultsTitle: document.getElementById('resultsTitle'),
     resultsContainer: document.getElementById('resultsContainer'),
     clearResults: document.getElementById('clearResults'),
-    
+
     categoriesSection: document.getElementById('categoriesSection'),
     categoriesGrid: document.getElementById('categoriesGrid'),
     backToMain: document.getElementById('backToMain'),
-    
+
     gpsSection: document.getElementById('gpsSection'),
     gpsContent: document.getElementById('gpsContent'),
     backFromGPS: document.getElementById('backFromGPS'),
-    
+
     rpTermsSection: document.getElementById('rpTermsSection'),
     rpTermsContent: document.getElementById('rpTermsContent'),
     backFromRPTerms: document.getElementById('backFromRPTerms'),
-    
+
     helperDutiesSection: document.getElementById('helperDutiesSection'),
     helperDutiesContent: document.getElementById('helperDutiesContent'),
     backFromHelperDuties: document.getElementById('backFromHelperDuties'),
-    
+
     chatRulesSection: document.getElementById('chatRulesSection'),
     chatRulesContent: document.getElementById('chatRulesContent'),
     backFromChatRules: document.getElementById('backFromChatRules'),
-    
+
     muteRulesSection: document.getElementById('muteRulesSection'),
     muteRulesContent: document.getElementById('muteRulesContent'),
     backFromMuteRules: document.getElementById('backFromMuteRules'),
-    
+
     premiumSection: document.getElementById('premiumSection'),
     premiumContent: document.getElementById('premiumContent'),
     backFromPremium: document.getElementById('backFromPremium'),
-    
+
     categorySection: document.getElementById('categorySection'),
     categoryTitle: document.getElementById('categoryTitle'),
     categoryContent: document.getElementById('categoryContent'),
     backFromCategory: document.getElementById('backFromCategory'),
-    
+
     loadingOverlay: document.getElementById('loadingOverlay')
 };
-
-// Оптимизация для мобильных устройств
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 // Инициализация приложения
 async function initializeApp() {
     try {
-        // Оптимизация для мобильных устройств
-        if (isMobile || isTouchDevice) {
-            document.body.classList.add('mobile-device');
-            
-            // Отключаем hover эффекты на мобильных
-            const style = document.createElement('style');
-            style.textContent = `
-                @media (hover: none) and (pointer: coarse) {
-                    .action-card:hover,
-                    .category-card:hover,
-                    .command-item:hover,
-                    .btn-icon:hover {
-                        transform: none !important;
-                        box-shadow: none !important;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-        }
-        
         // Инициализируем Telegram Web App
         if (window.Telegram && window.Telegram.WebApp) {
             appState.tg = window.Telegram.WebApp;
             appState.tg.ready();
             appState.tg.expand();
-            
+
             // Устанавливаем тему
             if (appState.tg.colorScheme === 'dark') {
                 document.body.classList.add('dark-theme');
             }
-            
+
             console.log('Telegram Web App инициализирован');
         } else {
             console.log('Telegram Web App недоступен, запускаем в режиме тестирования');
             // Устанавливаем темную тему по умолчанию для тестирования
             document.body.classList.add('dark-theme');
         }
-        
+
         // Загружаем все данные сразу
         await loadAllData();
-        
+
         // Настраиваем обработчики событий
         setupEventListeners();
-        
+
         // Показываем главную страницу
         showMainSection();
-        
+
         // Загружаем профиль пользователя
         await loadUserProfileFromTelegram();
-        
+
     } catch (error) {
         console.error('Ошибка инициализации приложения:', error);
-        
+
         // Показываем главную страницу даже при ошибке
         showMainSection();
-        
+
         // Пытаемся загрузить профиль пользователя
         await loadUserProfileFromTelegram();
     }
@@ -153,7 +152,7 @@ async function loadCommands() {
         const response = await fetch('commands.json');
         const commands = await response.json();
         appState.commands = commands;
-        
+
         // Группируем команды по категориям
         appState.categories = {};
         commands.forEach(command => {
@@ -162,7 +161,7 @@ async function loadCommands() {
             }
             appState.categories[command.category].push(command);
         });
-        
+
         console.log('Команды загружены:', commands.length);
     } catch (error) {
         console.error('Ошибка загрузки команд:', error);
@@ -174,12 +173,12 @@ async function loadCommands() {
 async function loadUserProfileFromTelegram() {
     try {
         let userData = null;
-        
+
         // Проверяем, есть ли Telegram Web App
         if (appState.tg && appState.tg.initDataUnsafe?.user) {
             const user = appState.tg.initDataUnsafe.user;
             console.log('Данные пользователя из Telegram:', user);
-            
+
             // Формируем объект пользователя из Telegram
             userData = {
                 telegram_id: user.id,
@@ -201,12 +200,12 @@ async function loadUserProfileFromTelegram() {
         } else {
             // Создаем fallback данные пользователя для тестирования
             console.log('Telegram Web App не доступен, создаем тестового пользователя');
-            
+
             // Пытаемся получить сохраненные данные из localStorage
             const savedUserId = localStorage.getItem('tg_user_id');
             const savedUsername = localStorage.getItem('tg_user_username');
             const savedFirstName = localStorage.getItem('tg_user_first_name');
-            
+
             userData = {
                 telegram_id: savedUserId || Math.floor(Math.random() * 1000000),
                 username: savedUsername || 'test_user',
@@ -224,22 +223,22 @@ async function loadUserProfileFromTelegram() {
                 last_active: new Date().toISOString(),
                 achievements: getLocalStorageValue('achievements', [])
             };
-            
+
             // Сохраняем тестовые данные
             localStorage.setItem('tg_user_id', userData.telegram_id);
             localStorage.setItem('tg_user_username', userData.username);
             localStorage.setItem('tg_user_first_name', userData.first_name);
         }
-        
+
         appState.userData = userData;
         updateProfileInfo();
-        
+
         // Сохраняем данные в локальное хранилище
         saveUserDataToStorage(userData);
-        
+
     } catch (error) {
         console.error('Ошибка загрузки профиля:', error);
-        
+
         // Создаем минимальные данные пользователя в случае ошибки
         const fallbackUserData = {
             telegram_id: Math.floor(Math.random() * 1000000),
@@ -257,7 +256,7 @@ async function loadUserProfileFromTelegram() {
             last_active: new Date().toISOString(),
             achievements: []
         };
-        
+
         appState.userData = fallbackUserData;
         updateProfileInfo();
         saveUserDataToStorage(fallbackUserData);
@@ -365,49 +364,37 @@ function saveUserDataToStorage(userData) {
     }
 }
 
-// Настройка обработчиков событий с оптимизацией для мобильных
+// Настройка обработчиков событий
 function setupEventListeners() {
-    // Оптимизация для мобильных устройств
-    const eventType = isTouchDevice ? 'touchstart' : 'click';
-    
     // Профиль
-    elements.profileBtn.addEventListener(eventType, showProfileModal);
-    elements.closeProfileModal.addEventListener(eventType, hideProfileModal);
-    
+    elements.profileBtn.addEventListener('click', showProfileModal);
+    elements.closeProfileModal.addEventListener('click', hideProfileModal);
+
     // Бургер меню
-    elements.burgerMenuBtn.addEventListener(eventType, showBurgerMenu);
-    elements.closeBurgerMenu.addEventListener(eventType, hideBurgerMenu);
-    
+    elements.burgerMenuBtn.addEventListener('click', showBurgerMenu);
+    elements.closeBurgerMenu.addEventListener('click', hideBurgerMenu);
+
     // Закрытие бургер меню при клике вне его
-    document.addEventListener(eventType, function(event) {
+    document.addEventListener('click', function(event) {
         if (event.target === elements.burgerMenu) {
             hideBurgerMenu();
         }
     });
-    
+
     // Закрытие модального окна профиля при клике вне его
-    document.addEventListener(eventType, function(event) {
+    document.addEventListener('click', function(event) {
         if (event.target === elements.profileModal) {
             hideProfileModal();
         }
     });
-    
-    // Поиск с оптимизацией для мобильных
+
+    // Поиск
     elements.searchInput.addEventListener('input', handleSearchInput);
-    elements.searchBtn.addEventListener(eventType, performSearch);
-    elements.clearResults.addEventListener(eventType, clearSearchResults);
-    
-    // Предотвращение зума на iOS
-    if (isMobile) {
-        elements.searchInput.addEventListener('blur', () => {
-            setTimeout(() => {
-                window.scrollTo(0, 0);
-            }, 100);
-        });
-    }
-    
+    elements.searchBtn.addEventListener('click', performSearch);
+    elements.clearResults.addEventListener('click', clearSearchResults);
+
     // Быстрые действия - исправляем обработчики
-    document.addEventListener(eventType, function(event) {
+    document.addEventListener('click', function(event) {
         const actionCard = event.target.closest('.action-card');
         if (actionCard) {
             const action = actionCard.dataset.action;
@@ -416,40 +403,16 @@ function setupEventListeners() {
             }
         }
     });
-    
-    // Кнопка выхода
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener(eventType, () => {
-            if (window.passwordSystem) {
-                window.passwordSystem.logout();
-            }
-        });
-    }
-    
+
     // Кнопки "Назад"
-    elements.backToMain.addEventListener(eventType, showMainSection);
-    elements.backFromGPS.addEventListener(eventType, showMainSection);
-    elements.backFromRPTerms.addEventListener(eventType, showMainSection);
-    elements.backFromHelperDuties.addEventListener(eventType, showMainSection);
-    elements.backFromChatRules.addEventListener(eventType, showMainSection);
-    elements.backFromMuteRules.addEventListener(eventType, showMainSection);
-    elements.backFromPremium.addEventListener(eventType, showMainSection);
-    elements.backFromCategory.addEventListener(eventType, showCategoriesSection);
-    
-    // Оптимизация прокрутки для мобильных
-    if (isMobile) {
-        // Плавная прокрутка
-        document.addEventListener('touchmove', (event) => {
-            const target = event.target;
-            if (target.scrollHeight > target.clientHeight) {
-                // Разрешаем прокрутку только для элементов с прокруткой
-                return;
-            }
-            // Предотвращаем прокрутку страницы при касании элементов
-            event.preventDefault();
-        }, { passive: false });
-    }
+    elements.backToMain.addEventListener('click', showMainSection);
+    elements.backFromGPS.addEventListener('click', showMainSection);
+    elements.backFromRPTerms.addEventListener('click', showMainSection);
+    elements.backFromHelperDuties.addEventListener('click', showMainSection);
+    elements.backFromChatRules.addEventListener('click', showMainSection);
+    elements.backFromMuteRules.addEventListener('click', showMainSection);
+    elements.backFromPremium.addEventListener('click', showMainSection);
+    elements.backFromCategory.addEventListener('click', showCategoriesSection);
 }
 
 // Показать модальное окно профиля
@@ -478,12 +441,12 @@ function hideBurgerMenu() {
 function updateProfileInfo() {
     if (appState.userData) {
         const user = appState.userData;
-        
+
         // Обновляем имя и username
         const fullName = user.last_name ? `${user.first_name} ${user.last_name}` : user.first_name;
         elements.profileName.textContent = fullName;
         elements.profileUsername.textContent = `@${user.username}`;
-        
+
         // Обновляем бейдж (Premium или обычный пользователь)
         if (user.is_premium) {
             elements.profileBadge.textContent = 'Premium';
@@ -492,7 +455,7 @@ function updateProfileInfo() {
             elements.profileBadge.textContent = 'User';
             elements.profileBadge.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
         }
-        
+
         // Обновляем аватар (используем первую букву имени или фото)
         if (user.photo_url) {
             // Если есть фото, загружаем его
@@ -502,12 +465,12 @@ function updateProfileInfo() {
             const firstLetter = user.first_name.charAt(0).toUpperCase();
             elements.avatarInner.textContent = firstLetter;
         }
-        
+
         // Обновляем статус (онлайн/оффлайн)
         const lastActive = new Date(user.last_active);
         const now = new Date();
         const diffMinutes = Math.floor((now - lastActive) / (1000 * 60));
-        
+
         if (diffMinutes < 5) {
             elements.statusIndicator.style.background = '#4ade80'; // Зеленый - онлайн
         } else if (diffMinutes < 60) {
@@ -515,16 +478,16 @@ function updateProfileInfo() {
         } else {
             elements.statusIndicator.style.background = '#ef4444'; // Красный - оффлайн
         }
-        
+
         // Обновляем статистику
         elements.searchCount.textContent = user.search_count || 0;
         elements.favoritesCount.textContent = user.favorites_count || 0;
         elements.commandsUsed.textContent = user.commands_used || 0;
-        
+
         // Форматируем дату последней активности
         if (user.last_active) {
             const diffHours = Math.floor((now - lastActive) / (1000 * 60 * 60));
-            
+
             if (diffMinutes < 5) {
                 elements.lastActive.textContent = 'Сейчас';
             } else if (diffHours < 1) {
@@ -538,7 +501,7 @@ function updateProfileInfo() {
         } else {
             elements.lastActive.textContent = '-';
         }
-        
+
         // Обновляем достижения
         updateAchievements(user.achievements || []);
     }
@@ -547,7 +510,7 @@ function updateProfileInfo() {
 // Обновить достижения
 function updateAchievements(achievements) {
     const achievementItems = elements.achievementsGrid.querySelectorAll('.achievement-item');
-    
+
     achievementItems.forEach((item, index) => {
         const achievementId = getAchievementId(index);
         if (achievements.includes(achievementId)) {
@@ -564,46 +527,30 @@ function getAchievementId(index) {
     return achievements[index] || '';
 }
 
-// Debounce функция для оптимизации поиска
-function debounce(func, wait) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Обработка ввода в поиск с оптимизацией для мобильных
+// Обработка ввода в поиск
 function handleSearchInput(event) {
     const query = event.target.value.toLowerCase().trim();
-    
+
     if (query.length < 2) {
         elements.searchSuggestions.innerHTML = '';
         return;
     }
-    
-    // Используем debounce для оптимизации на мобильных устройствах
-    debouncedShowSuggestions(query);
-}
 
-// Debounced версия показа подсказок
-const debouncedShowSuggestions = debounce(showSearchSuggestions, isMobile ? 300 : 150);
+    // Показываем подсказки
+    showSearchSuggestions(query);
+}
 
 // Показать подсказки поиска
 function showSearchSuggestions(query) {
     const suggestions = [];
-    
+
     // Добавляем команды
     if (appState.commands.length > 0) {
-        const matchingCommands = appState.commands.filter(cmd => 
+        const matchingCommands = appState.commands.filter(cmd =>
             cmd.command.toLowerCase().includes(query) ||
             cmd.description.toLowerCase().includes(query)
         ).slice(0, 2);
-        
+
         suggestions.push(...matchingCommands.map(cmd => ({
             type: 'command',
             text: cmd.command,
@@ -611,16 +558,16 @@ function showSearchSuggestions(query) {
             icon: '🔧'
         })));
     }
-    
+
     // Добавляем GPS локации
     if (appState.gpsData) {
         Object.entries(appState.gpsData).forEach(([category, locations]) => {
             if (Array.isArray(locations)) {
-                const matchingLocations = locations.filter(location => 
+                const matchingLocations = locations.filter(location =>
                     location.toLowerCase().includes(query) ||
                     category.toLowerCase().includes(query)
                 ).slice(0, 1);
-                
+
                 suggestions.push(...matchingLocations.map(location => ({
                     type: 'gps',
                     text: location,
@@ -630,12 +577,24 @@ function showSearchSuggestions(query) {
             }
         });
     }
-    
+
     // Добавляем RP термины
     if (appState.rpTerms) {
         Object.entries(appState.rpTerms).forEach(([term, description]) => {
-            if (term.toLowerCase().includes(query) || 
+            // Проверяем оригинальный термин
+            if (term.toLowerCase().includes(query) ||
                 description.toLowerCase().includes(query)) {
+                suggestions.push({
+                    type: 'rp',
+                    text: term,
+                    description: description,
+                    icon: '📖'
+                });
+            }
+            // Проверяем русский вариант термина
+            const russianTerm = rpTermsRussian[term];
+            if (russianTerm && (russianTerm.toLowerCase().includes(query) ||
+                description.toLowerCase().includes(query))) {
                 suggestions.push({
                     type: 'rp',
                     text: term,
@@ -645,10 +604,10 @@ function showSearchSuggestions(query) {
             }
         });
     }
-    
+
     // Ограничиваем количество подсказок
     suggestions.splice(3);
-    
+
     // Отображаем подсказки
     elements.searchSuggestions.innerHTML = suggestions.map(suggestion => `
         <div class="suggestion-item" data-type="${suggestion.type}" data-text="${suggestion.text}">
@@ -659,7 +618,7 @@ function showSearchSuggestions(query) {
             </div>
         </div>
     `).join('');
-    
+
     // Добавляем обработчики кликов
     elements.searchSuggestions.querySelectorAll('.suggestion-item').forEach(item => {
         item.addEventListener('click', () => {
@@ -673,20 +632,20 @@ function showSearchSuggestions(query) {
 // Выполнить поиск
 function performSearch() {
     const query = elements.searchInput.value.toLowerCase().trim();
-    
+
     if (query.length < 2) {
         hideSearchResults();
         return;
     }
-    
+
     showLoading();
-    
+
     // Имитируем задержку поиска
     setTimeout(() => {
         const results = performSearchLogic(query);
         displaySearchResults(results);
         hideLoading();
-        
+
         // Увеличиваем счетчик поисков
         if (appState.userData) {
             updateUserSearchCount();
@@ -736,6 +695,7 @@ function performSearchLogic(query) {
     // Поиск по RP терминам
     if (appState.rpTerms) {
         Object.entries(appState.rpTerms).forEach(([term, description]) => {
+            // Проверяем оригинальный термин
             const text = `${term} ${description}`.toLowerCase();
             if (words.some(word => text.includes(word))) {
                 results.push({
@@ -744,6 +704,19 @@ function performSearchLogic(query) {
                     description: description,
                     category: 'RP термины'
                 });
+            }
+            // Проверяем русский вариант термина
+            const russianTerm = rpTermsRussian[term];
+            if (russianTerm) {
+                const russianText = `${russianTerm} ${description}`.toLowerCase();
+                if (words.some(word => russianText.includes(word))) {
+                    results.push({
+                        type: 'rp',
+                        title: term,
+                        description: description,
+                        category: 'RP термины'
+                    });
+                }
             }
         });
     }
@@ -817,7 +790,7 @@ function displaySearchResults(results) {
             </div>
         `).join('');
     }
-    
+
     showSearchResults();
 }
 
@@ -857,22 +830,22 @@ function clearSearchResults() {
 // Обновить счетчик поисков
 async function updateUserSearchCount() {
     if (!appState.userData) return;
-    
+
     try {
         const newCount = (appState.userData.search_count || 0) + 1;
         appState.userData.search_count = newCount;
         elements.searchCount.textContent = newCount;
-        
+
         // Сохраняем в localStorage
         localStorage.setItem('tg_user_search_count', JSON.stringify(newCount));
-        
+
         // Проверяем достижения
         checkAchievements();
-        
+
         // Обновляем время последней активности
         appState.userData.last_active = new Date().toISOString();
         localStorage.setItem('tg_user_last_active', JSON.stringify(appState.userData.last_active));
-        
+
     } catch (error) {
         console.error('Ошибка обновления счетчика поисков:', error);
     }
@@ -881,18 +854,18 @@ async function updateUserSearchCount() {
 // Обновить счетчик использованных команд
 function updateUserCommandsUsed() {
     if (!appState.userData) return;
-    
+
     try {
         const newCount = (appState.userData.commands_used || 0) + 1;
         appState.userData.commands_used = newCount;
         elements.commandsUsed.textContent = newCount;
-        
+
         // Сохраняем в localStorage
         localStorage.setItem('tg_user_commands_used', JSON.stringify(newCount));
-        
+
         // Проверяем достижения
         checkAchievements();
-        
+
     } catch (error) {
         console.error('Ошибка обновления счетчика команд:', error);
     }
@@ -901,31 +874,31 @@ function updateUserCommandsUsed() {
 // Проверить и обновить достижения
 function checkAchievements() {
     if (!appState.userData) return;
-    
+
     const achievements = appState.userData.achievements || [];
     const newAchievements = [];
-    
+
     // Достижение за первые поиски
     if (appState.userData.search_count >= 1 && !achievements.includes('first_search')) {
         newAchievements.push('first_search');
     }
-    
+
     // Достижение за коллекционера (10 избранных)
     if (appState.userData.favorites_count >= 10 && !achievements.includes('collector')) {
         newAchievements.push('collector');
     }
-    
+
     // Достижение за эксперта (50 команд)
     if (appState.userData.commands_used >= 50 && !achievements.includes('expert')) {
         newAchievements.push('expert');
     }
-    
+
     // Добавляем новые достижения
     if (newAchievements.length > 0) {
         appState.userData.achievements = [...achievements, ...newAchievements];
         localStorage.setItem('tg_user_achievements', JSON.stringify(appState.userData.achievements));
         updateAchievements(appState.userData.achievements);
-        
+
         // Показываем уведомление о новом достижении
         showAchievementNotification(newAchievements[0]);
     }
@@ -938,9 +911,9 @@ function showAchievementNotification(achievementId) {
         'collector': 'Коллекционер',
         'expert': 'Эксперт'
     };
-    
+
     const achievementName = achievementNames[achievementId] || 'Новое достижение';
-    
+
     // Создаем уведомление
     const notification = document.createElement('div');
     notification.className = 'achievement-notification';
@@ -953,9 +926,9 @@ function showAchievementNotification(achievementId) {
             </div>
         </div>
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     // Удаляем уведомление через 3 секунды
     setTimeout(() => {
         notification.remove();
@@ -965,7 +938,7 @@ function showAchievementNotification(achievementId) {
 // Обработка клика по действию
 function handleActionClick(action) {
     console.log('Клик по действию:', action);
-    
+
     switch (action) {
         case 'categories':
             showCategoriesSection();
@@ -986,7 +959,7 @@ function showCategoriesSection() {
     hideAllSections();
     elements.categoriesSection.style.display = 'block';
     appState.currentSection = 'categories';
-    
+
     displayCategories();
 }
 
@@ -996,7 +969,7 @@ function displayCategories() {
         loadCommands().then(() => displayCategories());
         return;
     }
-    
+
     const categories = {};
     appState.commands.forEach(cmd => {
         if (!categories[cmd.category]) {
@@ -1004,7 +977,7 @@ function displayCategories() {
         }
         categories[cmd.category].push(cmd);
     });
-    
+
     elements.categoriesGrid.innerHTML = Object.entries(categories).map(([category, commands]) => `
         <div class="category-card" data-category="${category}">
             <div class="category-icon">${getCategorySVG(category)}</div>
@@ -1012,7 +985,7 @@ function displayCategories() {
             <div class="category-count">${commands.length} команд</div>
         </div>
     `).join('');
-    
+
     // Добавляем обработчики кликов
     elements.categoriesGrid.querySelectorAll('.category-card').forEach(card => {
         card.addEventListener('click', () => {
@@ -1051,9 +1024,9 @@ function showCategoryCommands(category) {
     elements.categorySection.style.display = 'block';
     elements.categoryTitle.textContent = category;
     appState.currentSection = 'category';
-    
+
     const categoryCommands = appState.commands.filter(cmd => cmd.category === category);
-    
+
     elements.categoryContent.innerHTML = categoryCommands.map(cmd => `
         <div class="command-item">
             <div class="command-name">${cmd.command}</div>
@@ -1068,7 +1041,7 @@ function showAllCommandsSection() {
     elements.categorySection.style.display = 'block';
     elements.categoryTitle.textContent = 'Все команды';
     appState.currentSection = 'all-commands';
-    
+
     elements.categoryContent.innerHTML = appState.commands.map(cmd => `
         <div class="command-item">
             <div class="command-name">${cmd.command}</div>
@@ -1083,7 +1056,7 @@ function showPremiumSection() {
     hideAllSections();
     elements.premiumSection.style.display = 'block';
     appState.currentSection = 'premium';
-    
+
     elements.premiumContent.innerHTML = `
         <div class="premium-header">
             <h2>💎 Премиум функции</h2>
@@ -1135,7 +1108,7 @@ function hideAllSections() {
         elements.premiumSection,
         elements.categorySection
     ];
-    
+
     sections.forEach(section => {
         if (section) section.style.display = 'none';
     });
